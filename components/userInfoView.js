@@ -9,13 +9,42 @@ export default class UserInfoView extends Component { //changename as is called 
 
     this.state = {
       user: {},
+      photo: null,
+      isLoading: true
     };
   }
 
-  componentDidMount() {
+ async componentDidMount() {
     this.fetchUserInfo();
       this.interval = setInterval(this.fetchUserInfo, 3000); //refresh messages every 3 seconds
+      const token = await AsyncStorage.getItem('whatsthat_session_token');
+      const userId = await AsyncStorage.getItem('whatsthat_user_id');
+      this.get_profile_image(token, userId)
+     // this.interval = setInterval(this.get_profile_image, 3000);
     }
+
+    get_profile_image(token, userId) {
+      fetch(`http://localhost:3333/api/1.0.0/user/${userId}/photo`, {
+          method: "GET",
+          headers: {
+              "X-Authorization": token
+          }
+      })
+      .then((res) => {
+          return res.blob()
+      })
+      .then((resBlob) => {
+          let data = URL.createObjectURL(resBlob);
+
+          this.setState({
+              photo: data,
+              isLoading: false
+          })
+      })
+      .catch((err) => {
+          console.log(err)
+      })
+  }
 
   fetchUserInfo = async () => {
     try {
@@ -41,9 +70,12 @@ export default class UserInfoView extends Component { //changename as is called 
     const { user } = this.state;
     const { navigation } = this.props;
     return (
-      <View style={styles.container}>
+      <View style={styles.container}> 
         <Text style={styles.title}>User Info</Text>
         <View style={styles.infoContainer}>
+        <View >
+        <Image source={{uri: this.state.photo}} style={styles.photo}/>
+          </View>
           <Text style={styles.label}>First Name:</Text>
           <Text style={styles.info}>{user.first_name}</Text>
           <Text style={styles.label}>Last Name:</Text>
@@ -54,7 +86,7 @@ export default class UserInfoView extends Component { //changename as is called 
         <TouchableOpacity style={styles.editInfoContainer} onPress={() => navigation.navigate('EditInfo')}>
            <Text style={styles.editInfoButton}>Edit Info</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.editInfoContainer} onPress={() => navigation.navigate('UploadPhoto')}>
+          <TouchableOpacity style={styles.editInfoContainer} onPress={() => navigation.navigate('CameraSendToServer')}>
            <Text style={styles.editInfoButton}>Upload Profile Photo</Text>
           </TouchableOpacity>
       </View>
@@ -123,6 +155,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "white",
+  },
+  photo: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 16,
   },
 });
 

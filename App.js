@@ -19,7 +19,7 @@ import UpdateMessage from './components/updateMessage'
 import Search from './components/search'
 import ViewPhoto from './components/viewPhoto'
 import AddOrDeleteUser from './components/addOrDeleteUser'
-
+import CameraSendToServer from './components/camera-sendtoserver';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -36,6 +36,8 @@ const ContactStackNavigator = () => {
   );
 };
 
+
+
 const UserInfoStack = createStackNavigator();
 
 const UserInfoStackNavigator = () => {
@@ -43,6 +45,7 @@ const UserInfoStackNavigator = () => {
     <UserInfoStack.Navigator>
       <UserInfoStack.Screen name="UserInfoView" component={UserInfoView} />
       <UserInfoStack.Screen name="EditInfo" component={EditInfo} />
+      <UserInfoStack.Screen name="CameraSendToServer" component={CameraSendToServer} />
     </UserInfoStack.Navigator>
   );
 };
