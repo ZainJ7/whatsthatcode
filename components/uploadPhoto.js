@@ -1,32 +1,44 @@
-import React, { Component } from "react";
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  Platform,
-} from "react-native";
-import ImagePicker from 'react-native-image-picker';
+  Camera,
+  CameraType,
+  onCameraReady,
+  CameraPictureOptions,
+} from "expo-camera";
+import { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default class UploadImage extends Component {
-  constructor(props) {
-    super(props);
+export default function CameraSendToServer() {
+  const [type, setType] = useState(CameraType.back);
+  const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [camera, setCamera] = useState(null);
 
-    this.state = {
-      image_uri: null,
-    };
+  function toggleCameraType() {
+    setType((current) =>
+      current === CameraType.back ? CameraType.front : CameraType.back
+    );
+    console.log("Camera: ", type);
   }
 
-  sendToServer = async (data) => {
-    const user_id = await AsyncStorage.getItem('whatsthat_user_id');
-    const token = await AsyncStorage.getItem("whatsthat_session_token");
+  async function takePhoto() {
+    if (camera) {
+      const options = {
+        quality: 0.5,
+        base64: true,
+        onPictureSaved: (data) => sendToServer(data),
+      };
+      const data = await camera.takePictureAsync(options);
+    }
+  }
 
-    let res = await fetch(data.base64);
+  async function sendToServer(data) {
+    const token = await AsyncStorage.getItem("whatsthat_session_token");
+    const userId = await AsyncStorage.getItem("whatsthat_user_id");
+
+    let res = await fetch(data.uri);
     let blob = await res.blob();
 
-    return fetch(`http://localhost:${user_id}/photo`, {
+    return fetch(`http://localhost:3333/api/1.0.0/user/${userId}/photo`, {
       method: "POST",
       headers: {
         "Content-Type": "image/png",
@@ -40,27 +52,26 @@ export default class UploadImage extends Component {
       .catch((err) => {
         console.log(err);
       });
-  };
+  }
 
-
-  render() {
-    const { image_uri } = this.state;
+  if (!permission || !permission.granted) {
+    return <Text>No access to camera</Text>;
+  } else {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Upload Image</Text>
-        {image_uri && (
-          <Image source={{ uri: image_uri }} style={styles.image} />
-        )}
-        <TouchableOpacity style={styles.button} onPress={this.handleChooseImage}>
-          <Text style={styles.buttonText}>Choose Image</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={this.handleUploadImage}
-          disabled={!image_uri}
-        >
-          <Text style={styles.buttonText}>Upload Image</Text>
-        </TouchableOpacity>
+        <Camera style={styles.camera} type={type} ref={(ref) => setCamera(ref)}>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
+              <Text style={styles.text}>Flip Camera</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={takePhoto}>
+              <Text style={styles.text}>Take Photo</Text>
+            </TouchableOpacity>
+          </View>
+        </Camera>
       </View>
     );
   }
@@ -69,38 +80,24 @@ export default class UploadImage extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    paddingTop: 50,
   },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: 'black',
-    backgroundColor: 'lightgreen',
-    paddingVertical: 20,
-    paddingHorizontal: 60,
+  buttonContainer: {
+    alignSelf: "flex-end",
+    padding: 5,
+    margin: 5,
   },
-  input: {
-    width: '80%',
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+  button: {
+    backgroundColor: "#128C7E",
     paddingHorizontal: 10,
-    marginBottom: 20,
-  },
-  addButton: {
-    backgroundColor: 'green',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 20,
     borderRadius: 5,
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "white",
   },
-  addButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    textAlign: 'center',
+  text: {
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: "bold",
   },
 });

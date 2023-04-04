@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
+import globalStyles from "../styles/global";
 
 export default class ViewChat extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ export default class ViewChat extends Component {
     this.fetchChats();
     this.interval = setInterval(this.fetchChats, 3000); //refresh messages every 3 seconds
   }
-  
+
   componentWillUnmount() {
     // Clear the interval when the component unmounts
     clearInterval(this.interval);
@@ -104,12 +105,11 @@ export default class ViewChat extends Component {
     </TouchableOpacity>
   );
 
-
   render() {
     const { navigation } = this.props;
     return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Chat List</Text>
+      <View style={globalStyles.container}>
+        <Text style={globalStyles.title}>Chat List</Text>
         <TouchableOpacity style={styles.createButton} onPress={this.createChat}>
           <Text style={styles.createButtonText}>Create Chat</Text>
         </TouchableOpacity>
@@ -125,24 +125,10 @@ export default class ViewChat extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-  },
-  title: {
-    backgroundColor: "#128C7E",
-    color: "#ffffff",
-    fontSize: 30,
-    fontWeight: "bold",
-    paddingVertical: 20,
-    paddingHorizontal: 60,
-    marginBottom: 20,
-    textAlign: "center",
-  },
   listContainer: {
     flex: 1,
     width: "100%",
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   chatContainer: {
     flexDirection: "row",
@@ -166,11 +152,11 @@ const styles = StyleSheet.create({
   },
   nameContainer: {
     flex: 1,
-    marginLeft: 10
+    marginLeft: 10,
   },
   name: {
     fontSize: 20,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   chatName: {
     fontSize: 16,
@@ -186,21 +172,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#128C7E",
     paddingHorizontal: 20,
     paddingVertical: 10,
-    borderRadius: 5
+    borderRadius: 5,
   },
   updateButtonText: {
     color: "#ffffff",
     fontSize: 14,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   timeContainer: {
     alignItems: "flex-end",
     justifyContent: "center",
-    marginRight: 10
+    marginRight: 10,
   },
   timestamp: {
     fontSize: 14,
-    color: "#8e8e8e"
+    color: "#8e8e8e",
   },
   createButton: {
     backgroundColor: "#128C7E",

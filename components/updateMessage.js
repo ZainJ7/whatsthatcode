@@ -1,27 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import globalStyles from "../styles/global";
 
 export default function UpdateMessage({ route, navigation }) {
   const { chat_id, message_id } = route.params;
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async () => {
     try {
-      const token = await AsyncStorage.getItem('whatsthat_session_token');
+      const token = await AsyncStorage.getItem("whatsthat_session_token");
       const url = `http://localhost:3333/api/1.0.0/chat/${chat_id}/message/${message_id}`;
       const response = await fetch(url, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
-          'X-Authorization': token,
+          "Content-Type": "application/json",
+          "X-Authorization": token,
         },
         body: JSON.stringify({
           message: message,
@@ -30,74 +31,59 @@ export default function UpdateMessage({ route, navigation }) {
       if (response.ok) {
         navigation.goBack();
       } else {
-        setError('Failed to update message');
+        setError("Failed to update message");
       }
     } catch (error) {
       console.error(error);
-      setError('Something went wrong');
+      setError("Something went wrong");
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Update Message</Text>
+    <View style={globalStyles.container}>
+      <Text style={globalStyles.title}>Update Message</Text>
       <View style={styles.formItem}>
-      <TextInput
-        style={styles.formInput}
-        value={message}
-        onChangeText={setMessage}
-        placeholder="Enter new message"
-      />
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+        <TextInput
+          style={styles.formInput}
+          value={message}
+          onChangeText={setMessage}
+          placeholder="Enter new message"
+        />
+        {error ? <Text style={styles.error}>{error}</Text> : null}
       </View>
       <View style={styles.formItem}>
-      <TouchableOpacity style={styles.formTouch} onPress={handleSubmit}>
-        <Text style={styles.formTouchText}>Submit</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.formTouch} onPress={handleSubmit}>
+          <Text style={styles.formTouchText}>Submit</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-  },
-  title: {
-    color: "white",
-    backgroundColor: "#128C7E",
-    padding: 10,
-    fontSize: 35,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20,
-    alignSelf: "stretch",
-    width: "100%",
-  },
   input: {
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 5,
     fontSize: 18,
-    color: 'black',
+    color: "black",
     marginBottom: 10,
   },
   button: {
-    backgroundColor: 'lightgreen',
+    backgroundColor: "lightgreen",
     borderRadius: 10,
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   error: {
-    color: 'red',
+    color: "red",
     marginBottom: 10,
   },
   formItem: {
@@ -108,7 +94,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     margin: 10,
-    textAlign: "center"
+    textAlign: "center",
   },
   formTouchText: {
     color: "white",

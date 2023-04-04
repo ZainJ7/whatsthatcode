@@ -1,59 +1,61 @@
 import React, { Component } from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import globalStyles from "../styles/global";
 
-export default class UserInfoView extends Component { //changename as is called myinfo
+export default class UserInfoView extends Component {
+  //changename as is called myinfo
   constructor(props) {
     super(props);
 
     this.state = {
       user: {},
       photo: null,
-      isLoading: true
+      isLoading: true,
     };
   }
 
- async componentDidMount() {
+  async componentDidMount() {
     this.fetchUserInfo();
-      this.interval = setInterval(this.fetchUserInfo, 3000); //refresh messages every 3 seconds
-      const token = await AsyncStorage.getItem('whatsthat_session_token');
-      const userId = await AsyncStorage.getItem('whatsthat_user_id');
-      this.get_profile_image(token, userId)
-     // this.interval = setInterval(this.get_profile_image, 3000);
-    }
+    this.interval = setInterval(this.fetchUserInfo, 3000); //refresh messages every 3 seconds
+    const token = await AsyncStorage.getItem("whatsthat_session_token");
+    const userId = await AsyncStorage.getItem("whatsthat_user_id");
+    this.get_profile_image(token, userId);
+    // this.interval = setInterval(this.get_profile_image, 3000);
+  }
 
-    get_profile_image(token, userId) {
-      fetch(`http://localhost:3333/api/1.0.0/user/${userId}/photo`, {
-          method: "GET",
-          headers: {
-              "X-Authorization": token
-          }
-      })
+  get_profile_image(token, userId) {
+    fetch(`http://localhost:3333/api/1.0.0/user/${userId}/photo`, {
+      method: "GET",
+      headers: {
+        "X-Authorization": token,
+      },
+    })
       .then((res) => {
-          return res.blob()
+        return res.blob();
       })
       .then((resBlob) => {
-          let data = URL.createObjectURL(resBlob);
+        let data = URL.createObjectURL(resBlob);
 
-          this.setState({
-              photo: data,
-              isLoading: false
-          })
+        this.setState({
+          photo: data,
+          isLoading: false,
+        });
       })
       .catch((err) => {
-          console.log(err)
-      })
+        console.log(err);
+      });
   }
 
   fetchUserInfo = async () => {
     try {
-      const userId = Number(await AsyncStorage.getItem('whatsthat_user_id'));
-      const token = await AsyncStorage.getItem('whatsthat_session_token');
+      const userId = Number(await AsyncStorage.getItem("whatsthat_user_id"));
+      const token = await AsyncStorage.getItem("whatsthat_session_token");
       const url = `http://localhost:3333/api/1.0.0/user/${userId}`;
       const response = await fetch(url, {
         headers: {
-          'X-Authorization': token,
+          "X-Authorization": token,
         },
       });
       const data = await response.json();
@@ -64,17 +66,16 @@ export default class UserInfoView extends Component { //changename as is called 
       console.error(error);
     }
   };
-  
 
   render() {
     const { user } = this.state;
     const { navigation } = this.props;
     return (
-      <View style={styles.container}> 
-        <Text style={styles.title}>User Info</Text>
+      <View style={globalStyles.container}>
+        <Text style={globalStyles.title}>User Info</Text>
         <View style={styles.infoContainer}>
-        <View style={styles.photoView}>
-        <Image source={{uri: this.state.photo}} style={styles.photo} />
+          <View style={styles.photoView}>
+            <Image source={{ uri: this.state.photo }} style={styles.photo} />
           </View>
           <Text style={styles.label}>First Name:</Text>
           <Text style={styles.info}>{user.first_name}</Text>
@@ -83,39 +84,31 @@ export default class UserInfoView extends Component { //changename as is called 
           <Text style={styles.label}>Email:</Text>
           <Text style={styles.info}>{user.email}</Text>
         </View>
-        <TouchableOpacity style={styles.editInfoContainer} onPress={() => navigation.navigate('EditInfo')}>
-           <Text style={styles.editInfoButton}>Edit Info</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.editInfoContainer} onPress={() => navigation.navigate('CameraSendToServer')}>
-           <Text style={styles.editInfoButton}>Upload Profile Photo</Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.editInfoContainer}
+          onPress={() => navigation.navigate("EditInfo")}
+        >
+          <Text style={styles.editInfoButton}>Edit Info</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.editInfoContainer}
+          onPress={() => navigation.navigate("UploadPhoto")}
+        >
+          <Text style={styles.editInfoButton}>Upload Profile Photo</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-  },
-  title: {
-    backgroundColor: "#128C7E",
-    color: "#ffffff",
-    fontSize: 30,
-    fontWeight: "bold",
-    paddingVertical: 20,
-    paddingHorizontal: 60,
-    marginBottom: 20,
-    textAlign: "center",
-  },
   infoContainer: {
     alignItems: "flex-start",
     backgroundColor: "#ffffff",
     padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: "#dcdcdc",
-    minHeight: 300, 
+    minHeight: 300,
     marginVertical: 10,
     marginHorizontal: 10,
     borderRadius: 10,
@@ -127,7 +120,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 5,
-  },  
+  },
   label: {
     fontWeight: "bold",
     fontSize: 25,
@@ -137,7 +130,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     marginBottom: 20,
     marginLeft: 10,
-    color: '#383838'
+    color: "#383838",
   },
   editInfoContainer: {
     alignItems: "center",
@@ -163,11 +156,10 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   photoView: {
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20
-  }
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
 });
-

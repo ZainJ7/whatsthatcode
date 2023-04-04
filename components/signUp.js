@@ -8,6 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 import * as EmailValidator from "email-validator";
+import globalStyles from "../styles/global";
 
 class SignUp extends Component {
   constructor(props) {
@@ -60,44 +61,44 @@ class SignUp extends Component {
     this.setState({ success: true });
 
     return fetch("http://localhost:3333/api/1.0.0/user", {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        "first_name": this.state.first_name,
-        "last_name": this.state.last_name,
-        "email": this.state.email,
-        "password": this.state.password
-      })
+        first_name: this.state.first_name,
+        last_name: this.state.last_name,
+        email: this.state.email,
+        password: this.state.password,
+      }),
     })
       .then((response) => {
-        if(response.status === 201){
-          return response.json()
-        }else if(response.status === 400){
-          throw 'Failed validation';
-        }else{
-          throw 'Something went wrong';
+        if (response.status === 201) {
+          return response.json();
+        } else if (response.status === 400) {
+          throw "Failed validation";
+        } else {
+          throw "Something went wrong";
         }
       })
-        .then((rJson) => {
-          console.log(rJson)
-          this.setState({"error": "User added successfully"})
-          this.setState({"submitted": false});
-          this.props.navigation.navigate("Login")
-        })
-        .catch((error) => {
-          this.setState({"error": error})
-          this.setState({"submitted": false});
-        })
+      .then((rJson) => {
+        console.log(rJson);
+        this.setState({ error: "User added successfully" });
+        this.setState({ submitted: false });
+        this.props.navigation.navigate("Login");
+      })
+      .catch((error) => {
+        this.setState({ error: error });
+        this.setState({ submitted: false });
+      });
   }
 
   render() {
     const { navigation } = this.props;
     return (
-      <View style={styles.container}>
+      <View style={globalStyles.container}>
         <ScrollView>
-          <Text style={styles.title}>Create An Account</Text>
+          <Text style={globalStyles.title}>Create An Account</Text>
 
           <View style={styles.formItem}>
             <Text style={styles.formLabel}>First Name:</Text>
@@ -179,10 +180,12 @@ class SignUp extends Component {
             )}
           </>
           <View style={styles.haveAccountContainer}>
-       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.haveAccountButton}>Already have an account?</Text>
-        </TouchableOpacity>
-        </View>
+            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+              <Text style={styles.haveAccountButton}>
+                Already have an account?
+              </Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </View>
     );
@@ -190,22 +193,6 @@ class SignUp extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-   
-  },
-  title: {
-    color: "white",
-    backgroundColor: "#128C7E",
-    padding: 10,
-    fontSize: 35,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20,
-    alignSelf: "stretch",
-    width: "100%",
-  },  
   formItem: {
     padding: 10,
   },
@@ -230,7 +217,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     margin: 10,
-    textAlign: "center"
+    textAlign: "center",
   },
   formTouchText: {
     color: "white",
@@ -240,8 +227,6 @@ const styles = StyleSheet.create({
   error: {
     color: "red",
     fontSize: 20,
-    marginTop: 5,
-    marginBottom: 10,
     textAlign: "center",
   },
   success: {

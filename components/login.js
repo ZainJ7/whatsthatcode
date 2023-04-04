@@ -1,27 +1,33 @@
 import React, { Component } from "react";
-import { View, ScrollView, Text, TextInput, TouchableOpacity,StyleSheet, } from "react-native";
+import {
+  View,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import * as EmailValidator from "email-validator";
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import globalStyles from "../styles/global";
 
 class Login extends Component {
-
-  componentDidMount(){
-    this.unsubscribe = this.props.navigation.addListener('focus', () => {
+  componentDidMount() {
+    this.unsubscribe = this.props.navigation.addListener("focus", () => {
       this.checkLoggedIn();
     });
   }
 
   componentWillUnmount() {
-      this.unsubscribe();
+    this.unsubscribe();
   }
 
   checkLoggedIn = async () => {
-    const value = await AsyncStorage.getItem('whatsthat_session_token');
+    const value = await AsyncStorage.getItem("whatsthat_session_token");
     if (value == null) {
-      this.props.navigation.navigate('Home');
-    };
-  }
-
+      this.props.navigation.navigate("Home");
+    }
+  };
 
   constructor(props) {
     super(props);
@@ -54,47 +60,46 @@ class Login extends Component {
 
     this.setState({ success: true });
 
-
     return fetch("http://localhost:3333/api/1.0.0/login", {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        "email": this.state.email,
-        "password": this.state.password
-      })
+        email: this.state.email,
+        password: this.state.password,
+      }),
     })
       .then((response) => {
-        if(response.status === 200){
-          return response.json()
-        }else if(response.status === 400){
-          throw 'Failed validation';
-        }else{
-          throw 'Something went wrong';
+        if (response.status === 200) {
+          return response.json();
+        } else if (response.status === 400) {
+          throw "Failed validation";
+        } else {
+          throw "Something went wrong";
         }
       })
-     .then(async (rJson) => {
-       console.log(rJson)
-       try{
-         await AsyncStorage.setItem("whatsthat_user_id", rJson.id)
-         await AsyncStorage.setItem("whatsthat_session_token", rJson.token)
+      .then(async (rJson) => {
+        console.log(rJson);
+        try {
+          await AsyncStorage.setItem("whatsthat_user_id", rJson.id);
+          await AsyncStorage.setItem("whatsthat_session_token", rJson.token);
 
-         this.setState({"submitted": false});
+          this.setState({ submitted: false });
 
-         this.props.navigation.navigate("Main")
-       }catch{
-         throw "Something went wrong"
-       }
-     })
+          this.props.navigation.navigate("Main");
+        } catch {
+          throw "Something went wrong";
+        }
+      });
   }
 
   render() {
     const { navigation } = this.props;
     return (
-      <View style={styles.container}>
+      <View style={globalStyles.container}>
         <ScrollView>
-          <Text style={styles.title}>Login</Text>
+          <Text style={globalStyles.title}>Login</Text>
 
           <View style={styles.formItem}>
             <Text style={styles.formLabel}>Email:</Text>
@@ -145,10 +150,12 @@ class Login extends Component {
             )}
           </>
           <View style={styles.dontHaveAccountContainer}>
-       <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-          <Text style={styles.dontHaveAccountButton}>Don't have an account?</Text>
-        </TouchableOpacity>
-        </View>
+            <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+              <Text style={styles.dontHaveAccountButton}>
+                Don't have an account?
+              </Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </View>
     );
@@ -156,22 +163,6 @@ class Login extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-    
-  },
-  title: {
-    color: "white",
-    backgroundColor: "#128C7E",
-    padding: 10,
-    fontSize: 35,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20,
-    alignSelf: "stretch",
-    width: "100%",
-  },  
   formItem: {
     padding: 20,
   },
@@ -196,7 +187,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     margin: 10,
-    textAlign: "center"
+    textAlign: "center",
   },
   formTouchText: {
     color: "white",
@@ -206,8 +197,6 @@ const styles = StyleSheet.create({
   error: {
     color: "red",
     fontSize: 20,
-    marginTop: 5,
-    marginBottom: 10,
     textAlign: "center",
   },
   success: {
@@ -228,6 +217,5 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
 });
-
 
 export default Login;

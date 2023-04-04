@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Image, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import globalStyles from '../styles/global'
 
 class ViewPhoto extends React.Component {
   state = {

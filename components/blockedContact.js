@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { View, Text, Image, StyleSheet, FlatList, Button } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { greaterThan } from "react-native-reanimated";
+import globalStyles from "../styles/global";
 
 export default class BlockedContact extends Component {
   constructor(props) {
@@ -11,39 +12,41 @@ export default class BlockedContact extends Component {
     this.state = {
       contacts: [],
       isLoading: null,
+      message: ""
     };
   }
 
   componentDidMount() {
     this.fetchContacts();
-    this.interval = setInterval(this.fetchContacts, 5000); //refresh cntacts every 5 seconds
+    this.interval = setInterval(this.fetchContacts, 5000); 
   }
 
   componentWillUnmount() {
-    // Clear the interval when the component unmounts
     clearInterval(this.interval);
   }
 
   fetchContacts = async () => {
-    try {
-      const token = await AsyncStorage.getItem('whatsthat_session_token');
+    try {               
+      const token = await AsyncStorage.getItem("whatsthat_session_token");                    
       const url = `http://localhost:3333/api/1.0.0/blocked`;
       const response = await fetch(url, {
         headers: {
-          'X-Authorization': token,
+          "X-Authorization": token,
         },
       });
       const data = await response.json();
-      
-      // Make a separate API call to get the profile photo URL for each contact
+
       const contacts = await Promise.all(
-        data.map(async contact => {
-          const photoUrlResponse = await fetch(`http://localhost:3333/api/1.0.0/user/${contact.user_id}/photo`, {
-            method: 'GET',
-            headers: {
-              'X-Authorization': token,
-            },
-          });
+        data.map(async (contact) => {
+          const photoUrlResponse = await fetch(
+            `http://localhost:3333/api/1.0.0/user/${contact.user_id}/photo`,
+            {
+              method: "GET",
+              headers: {
+                "X-Authorization": token,
+              },
+            }
+          );
           const photoBlob = await photoUrlResponse.blob();
           const photoUrl = URL.createObjectURL(photoBlob);
           return { ...contact, photoUrl };
@@ -57,33 +60,42 @@ export default class BlockedContact extends Component {
       console.error(error);
     }
   };
-  
+
   unblockContact = async (contactId) => {
-        try {
-          const token = await AsyncStorage.getItem('whatsthat_session_token');
-          const url = `http://localhost:3333/api/1.0.0/user/${contactId}/block`;
-          const response = await fetch(url, {
-            method: 'DELETE',
-            headers: {
-              'X-Authorization': token,
-            },
-          });
-          if (response.ok) {
-            // remove the deleted contact from the state
-            this.setState(prevState => ({
-              contacts: prevState.contacts.filter(contact => contact.user_id !== contactId)
-            }));
-            console.log("Contact unblocked successfully!");
-          } else {
-            console.error("Failed to unblock contact.");
-          }
-        } catch (error) {
-          console.error(error);
-        }
+    try {
+      const token = await AsyncStorage.getItem("whatsthat_session_token");         
+      const url = `http://localhost:3333/api/1.0.0/user/${contactId}/block`;
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "X-Authorization": token,
+        },
+      });
+      if (response.ok) {
+        this.setState((prevState) => ({
+          contacts: prevState.contacts.filter(
+            (contact) => contact.user_id !== contactId
+          ),
+        }));
+        this.setState({ message: "Contact Unblocked Successfully!" }, () => {
+          setTimeout(() => {
+            this.setState({ message: "" });
+          }, 3000);
+        }); 
+      } else {
+        this.setState({ message: "Failed to unblock contact." }, () => {
+          setTimeout(() => {
+            this.setState({ message: "" });
+          }, 3000);
+        }); 
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
-  
+
   renderContact = ({ item }) => (
-    <View style={styles.contactContainer}>
+    <View style={styles.contactContainer}>                                  
       <Image source={{ uri: item.photoUrl }} style={styles.photo} />
       <View style={styles.contactInfo}>
         <Text style={styles.name}>
@@ -91,22 +103,19 @@ export default class BlockedContact extends Component {
         </Text>
         <Text style={styles.email}>{item.email}</Text>
         <TouchableOpacity onPress={() => this.unblockContact(item.user_id)}>
-          <Text style={styles.unblock}>Unblock</Text>
+          <Text style={styles.unblockButton}>Unblock</Text>
         </TouchableOpacity>
-
       </View>
     </View>
   );
 
   render() {
-    const { navigation } = this.props;
-    return (      
-      <View style={styles.container}>
-        <Text style={styles.title}>Blocked Contacts</Text>
-        <View style={styles.addButtonContainer}>
-          </View>
+    return (
+      <View style={globalStyles.container}>                     
+        <Text style={globalStyles.title}>Blocked Contacts</Text>
+        <Text style={styles.message}>{this.state.message}</Text>
         <FlatList
-          data={this.state.contacts}
+          data={this.state.contacts}     
           renderItem={this.renderContact}
           keyExtractor={(item) => item.user_id.toString()}
           style={styles.listContainer}
@@ -117,21 +126,6 @@ export default class BlockedContact extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    paddingTop: 50,
-  },
-  title: {
-    backgroundColor: "#128C7E",
-    color: "#ffffff",
-    fontSize: 30,
-    fontWeight: "bold",
-    paddingVertical: 20,
-    paddingHorizontal: 60,
-    marginBottom: 20,
-    textAlign: "center",
-  },
   listContainer: {
     flex: 1,
     backgroundColor: "#fff",
@@ -173,27 +167,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  status: {
-    fontSize: 14,
-    color: "#777",
-  },
-  delete: {
+  unblockButton: {
     fontSize: 20,
-    marginTop: 10, // Add a marginTop property to create space between the button and the text
-  },
-  unblock: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
-    backgroundColor: '#128C7E',
+    fontWeight: "bold",
+    color: "white",
+    backgroundColor: "#128C7E",
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,
-    marginTop: 10, // Add a marginTop property to create space between the button and the text
+    marginTop: 10, 
   },
-  addButtonContainer: {
-    marginRight: 10,
-    alignSelf: "flex-end",
-    marginBottom: 10,
-  },
+  message: {
+    fontSize: 20,
+    alignSelf: "stretch",
+    textAlign: "center",
+  }
 });

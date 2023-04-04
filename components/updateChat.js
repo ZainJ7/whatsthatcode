@@ -1,25 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import globalStyles from "../styles/global";
 
 export default function UpdateChat({ route, navigation }) {
-  const [chatName, setChatName] = useState('');
+  const [chatName, setChatName] = useState("");
   const [chatDetails, setChatDetails] = useState(null);
   const { chat_id } = route.params;
 
   useEffect(() => {
     async function fetchChatDetails() {
-      const token = await AsyncStorage.getItem('whatsthat_session_token');
+      const token = await AsyncStorage.getItem("whatsthat_session_token");
       const url = `http://localhost:3333/api/1.0.0/chat/${chat_id}`;
       const response = await fetch(url, {
         headers: {
-          'X-Authorization': token,
+          "X-Authorization": token,
         },
       });
       const data = await response.json();
@@ -31,13 +32,13 @@ export default function UpdateChat({ route, navigation }) {
 
   const handleSubmit = async () => {
     try {
-      const token = await AsyncStorage.getItem('whatsthat_session_token');
+      const token = await AsyncStorage.getItem("whatsthat_session_token");
       const url = `http://localhost:3333/api/1.0.0/chat/${chat_id}`;
       const response = await fetch(url, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
-          'X-Authorization': token,
+          "Content-Type": "application/json",
+          "X-Authorization": token,
         },
         body: JSON.stringify({
           name: chatName,
@@ -46,7 +47,7 @@ export default function UpdateChat({ route, navigation }) {
       if (response.ok) {
         navigation.goBack();
       } else {
-        console.error('Failed to update chat');
+        console.error("Failed to update chat");
       }
     } catch (error) {
       console.error(error);
@@ -54,22 +55,22 @@ export default function UpdateChat({ route, navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.container}>
       {chatDetails && (
         <>
-          <Text style={styles.title}>Update Chat Info</Text>
+          <Text style={globalStyles.title}>Update Chat Info</Text>
           <View style={styles.formItem}>
-          <TextInput
-            style={styles.formInput}
-            value={chatName}
-            onChangeText={setChatName}
-            placeholder="Enter new chat name"
-          />
+            <TextInput
+              style={styles.formInput}
+              value={chatName}
+              onChangeText={setChatName}
+              placeholder="Enter new chat name"
+            />
           </View>
           <View style={styles.formItem}>
-          <TouchableOpacity style={styles.formTouch} onPress={handleSubmit}>
-            <Text style={styles.formTouchText}>Submit</Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.formTouch} onPress={handleSubmit}>
+              <Text style={styles.formTouchText}>Submit</Text>
+            </TouchableOpacity>
           </View>
         </>
       )}
@@ -78,21 +79,6 @@ export default function UpdateChat({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-  },
-  title: {
-    color: "white",
-    backgroundColor: "#128C7E",
-    padding: 10,
-    fontSize: 35,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20,
-    alignSelf: "stretch",
-    width: "100%",
-  },
   inputContainer: {
     padding: 20,
   },
@@ -117,7 +103,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     margin: 10,
-    textAlign: "center"
+    textAlign: "center",
   },
   submitButtonText: {
     color: "white",
@@ -132,7 +118,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     margin: 10,
-    textAlign: "center"
+    textAlign: "center",
   },
   formTouchText: {
     color: "white",
@@ -152,5 +138,3 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 });
-
-
