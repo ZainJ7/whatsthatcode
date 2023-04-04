@@ -73,8 +73,8 @@ export default class UserInfoView extends Component { //changename as is called 
       <View style={styles.container}> 
         <Text style={styles.title}>User Info</Text>
         <View style={styles.infoContainer}>
-        <View >
-        <Image source={{uri: this.state.photo}} style={styles.photo}/>
+        <View style={styles.photoView}>
+        <Image source={{uri: this.state.photo}} style={styles.photo} />
           </View>
           <Text style={styles.label}>First Name:</Text>
           <Text style={styles.info}>{user.first_name}</Text>
@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     marginBottom: 20,
     marginLeft: 10,
+    color: '#383838'
   },
   editInfoContainer: {
     alignItems: "center",
@@ -157,10 +158,16 @@ const styles = StyleSheet.create({
     color: "white",
   },
   photo: {
-    width: 50,
-    height: 50,
+    width: 100,
+    height: 100,
     borderRadius: 25,
-    marginRight: 16,
   },
+  photoView: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20
+  }
 });
 

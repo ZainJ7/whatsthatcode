@@ -76,15 +76,19 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         padding: 5,
         margin: 5,
-        backgroundColor: 'steelblue'
     },
     button: {
-        width: '100%',
-        height: '100%'
+        backgroundColor: "#128C7E",
+        paddingHorizontal: 10,
+        paddingVertical: 20,
+        borderRadius: 5,
+        fontSize: 20,
+        fontWeight: "bold",
+        color: "white",
     },
     text: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        color: '#ddd'
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: "bold"
     }
 })
