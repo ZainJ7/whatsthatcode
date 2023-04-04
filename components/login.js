@@ -1,17 +1,11 @@
 import React, { Component } from "react";
-import {
-  View,
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import {View, ScrollView, Text, TextInput, TouchableOpacity, StyleSheet,} from "react-native";
 import * as EmailValidator from "email-validator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import globalStyles from "../styles/global";
 
 class Login extends Component {
+
   componentDidMount() {
     this.unsubscribe = this.props.navigation.addListener("focus", () => {
       this.checkLoggedIn();
@@ -25,7 +19,7 @@ class Login extends Component {
   checkLoggedIn = async () => {
     const value = await AsyncStorage.getItem("whatsthat_session_token");
     if (value == null) {
-      this.props.navigation.navigate("Home");
+      this.props.navigation.navigate("SignUp");
     }
   };
 

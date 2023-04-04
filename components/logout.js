@@ -1,12 +1,5 @@
 import React, { Component } from "react";
-import {
-  View,
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import {View, ScrollView, Text, TouchableOpacity, StyleSheet,} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import globalStyles from "../styles/global";
 
@@ -79,9 +72,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingVertical: 30,
     borderRadius: 10,
+    textAlign: "center",
   },
   formTouchText: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "bold",
     color: "white",
   },

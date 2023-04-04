@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
+import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, FlatList,} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import globalStyles from "../styles/global";
 
@@ -43,7 +35,6 @@ export default class Search extends Component {
         body: JSON.stringify({}),
       });
       if (response.ok) {
-        // Set the message to show only for the user who clicked the "Add User" button
         this.setState((prevState) => ({
           message: {
             ...prevState.message,
@@ -51,12 +42,10 @@ export default class Search extends Component {
           },
         }));
       } else {
-        // Set the message to show only for the user who clicked the "Add User" button
         this.setState((prevState) => ({
           message: { ...prevState.message, [userId]: "Failed to add contact" },
         }));
       }
-      // Clear the message after 2 seconds
       setTimeout(() => {
         this.setState((prevState) => ({
           message: { ...prevState.message, [userId]: null },
@@ -200,13 +189,6 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 10,
   },
-  dropdown: {
-    borderWidth: 1,
-    borderColor: "#777",
-    padding: 8,
-    margin: 10,
-    width: "30%",
-  },
   searchButton: {
     backgroundColor: "#128C7E",
     padding: 10,
@@ -222,51 +204,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "90%",
     marginTop: 20,
-  },
-  resultItem: {
-    borderWidth: 1,
-    borderColor: "#777",
-    padding: 10,
-    borderRadius: 10,
-    marginVertical: 10,
-  },
-  resultLabel: {
-    fontWeight: "bold",
-    fontSize: 20,
-    marginBottom: 10,
-  },
-  resultValue: {
-    fontSize: 18,
-  },
-  paginationContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 20,
-  },
-  paginationButton: {
-    padding: 10,
-    borderRadius: 10,
-  },
-  paginationButtonText: {
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  searchContainer: {
-    backgroundColor: "#eee",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginHorizontal: 20,
-    borderRadius: 10,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  searchIcon: {
-    marginRight: 10,
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 16,
-    color: "#777",
   },
   contactContainer: {
     flexDirection: "row",
@@ -289,23 +226,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  contactImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 10,
-  },
   name: {
     fontSize: 18,
     fontWeight: "bold",
-  },
-  contactPhoneNumber: {
-    fontSize: 16,
-    color: "#555",
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    paddingTop: 10,
   },
   addUserButton: {
     fontSize: 20,
@@ -320,10 +243,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     flexDirection: "row",
     alignItems: "center",
-  },
-  messageContainer: {
-    flexDirection: "column",
-    marginTop: 10,
   },
   message: {
     paddingTop: 10,
