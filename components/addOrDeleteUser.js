@@ -29,7 +29,7 @@ export default class AddOrDeleteUser extends Component {
     clearInterval(this.interval);
   }
 
-  fetchContacts = async () => {                                 // api call to view contacts and their profile photos 
+  fetchContacts = async () => {                                 
     try {
       const token = await AsyncStorage.getItem("whatsthat_session_token");
       const url = `http://localhost:3333/api/1.0.0/contacts`;
@@ -65,7 +65,7 @@ export default class AddOrDeleteUser extends Component {
     }
   };
 
-  handleAddUser = async (userId) => {                             // api call to add user to chat which is called when button clicked 
+  handleAddUser = async (userId) => {                             
     const { chat_id } = this.props.route.params;
     try {
       const token = await AsyncStorage.getItem("whatsthat_session_token");
@@ -94,7 +94,7 @@ export default class AddOrDeleteUser extends Component {
     }
   };
 
-  handleDeleteUser = async (userId) => {                              // api call to delete user from chat which is called when button clicked
+  handleDeleteUser = async (userId) => {                              
     const { chat_id } = this.props.route.params;
     try {
       const token = await AsyncStorage.getItem("whatsthat_session_token");
@@ -124,7 +124,7 @@ export default class AddOrDeleteUser extends Component {
   };
 
   renderContact = ({ item }) => (  
-    <View style={styles.contactContainer}>                                {/* rendering each contact seperatley */}
+    <View style={styles.contactContainer}>                                
       <Image source={{ uri: item.photoUrl }} style={styles.photo} />
       <View style={styles.contactInfoView}>
         <Text style={styles.name}>
@@ -159,9 +159,9 @@ export default class AddOrDeleteUser extends Component {
 
   render() {
     return (                                                                          
-      <View style={styles.container}>                                               {/* rendering all the parts including title, list and each contact */}
+      <View style={styles.container}>                                               
         <Text style={styles.title}>Add/Remove Users</Text>
-          <Text style={styles.message}>{this.state.message}</Text> {/* error message*/}
+          <Text style={styles.message}>{this.state.message}</Text> 
         <FlatList
           data={this.state.contacts}
           renderItem={this.renderContact}
