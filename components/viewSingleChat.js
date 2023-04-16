@@ -163,6 +163,16 @@ export default class ViewSingleChat extends Component {
       <View style={globalStyles.container}>
         <Text style={globalStyles.title}>Chat</Text>
         <TouchableOpacity
+          style={styles.draftsButton}
+          onPress={() =>
+            this.props.navigation.navigate("Drafts", {
+              chat_id: chat_id,
+            })
+          }
+        >
+          <Text style={styles.draftsButtonText}>Drafts</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
           style={styles.addUserButton}
           onPress={() =>
             this.props.navigation.navigate("AddOrDeleteUser", {
@@ -294,5 +304,17 @@ const styles = StyleSheet.create({
     marginTop: 5,
     width: 100,
     height: 40,
+  },
+  draftsButton: {
+    backgroundColor: "purple",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  draftsButtonText: {
+    color: "#fff",
+    textAlign: "center",
   },
 });

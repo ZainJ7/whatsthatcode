@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Ionicons } from '@expo/vector-icons';
 
 import Login from "./components/login";
 import SignUp from "./components/signUp";
@@ -18,6 +19,8 @@ import UpdateMessage from "./components/updateMessage";
 import Search from "./components/search";
 import AddOrDeleteUser from "./components/addOrDeleteUser";
 import UploadPhoto from "./components/uploadPhoto";
+import Drafts from './components/draftsScreen'
+import EditDraftScreen from "./components/editDraftScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -55,6 +58,8 @@ const ChatStackNavigator = () => {
       <ChatStack.Screen name="UpdateChat" component={UpdateChat} />
       <ChatStack.Screen name="AddOrDeleteUser" component={AddOrDeleteUser} />
       <ChatStack.Screen name="UpdateMessage" component={UpdateMessage} />
+      <ChatStack.Screen name="Drafts" component={Drafts} />
+      <ChatStack.Screen name="EditDraftScreen" component={EditDraftScreen} />
     </ChatStack.Navigator>
   );
 };
@@ -63,36 +68,36 @@ const ChatStackNavigator = () => {
 const MainTabNavigator = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen
-        name="Contact"
-        component={ContactStackNavigator}
-        options={{ headerShown: false}}
-      />
-      <Tab.Screen
-        name="Chat"
-        component={ChatStackNavigator}
-        options={{ headerShown: false}}
-      />
-      <Tab.Screen
-        name="UserInfo"
-        component={UserInfoStackNavigator}
-        options={{ headerShown: false}}
-      />
-      <Tab.Screen
-        name="Search"
-        component={Search}
-        options={{
+      <Tab.Screen name="Contacts" component={ContactStackNavigator} options={{ headerShown: false, tabBarIcon: ({ focused,size }) => (
+            <Ionicons name={focused ? 'ios-people' : 'ios-people-outline'} size={size} color={"black"}/>
+          ),
         }}
       />
-      <Tab.Screen
-        name="LogOut"
-        component={LogOut}
-        options={{
+      <Tab.Screen name="Chat" component={ChatStackNavigator} options={{ headerShown: false, tabBarIcon: ({ focused,size }) => (
+            <Ionicons name={focused ? 'ios-chatbubbles' : 'ios-chatbubbles-outline'} size={size} color={"black"}/>
+          ),
+        }}
+      />
+      <Tab.Screen name="Info" component={UserInfoStackNavigator} options={{ headerShown: false, tabBarIcon: ({ focused,size }) => (
+            <Ionicons name={focused ? 'ios-person' : 'ios-person-outline'} size={size} color={"black"}/>
+          ),
+        }}
+      />
+      <Tab.Screen name="Search" component={Search} options={{ tabBarIcon: ({ focused,size }) => (
+            <Ionicons name={focused ? 'ios-search' : 'ios-search-outline'} size={size} color={"black"}/>
+          ),
+        }}
+      />
+      <Tab.Screen name="Log Out" component={LogOut} options={{ tabBarIcon: ({ focused, size }) => (
+            <Ionicons name={focused ? 'ios-log-out' : 'ios-log-out-outline'} size={size} color={"black"}
+            />
+          ),
         }}
       />
     </Tab.Navigator>
   );
 };
+
 
 const App = () => {
   return (
