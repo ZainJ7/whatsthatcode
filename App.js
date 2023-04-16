@@ -67,18 +67,18 @@ const ChatStackNavigator = () => {
 
 const MainTabNavigator = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Contacts" component={ContactStackNavigator} options={{ headerShown: false, tabBarIcon: ({ focused,size }) => (
+    <Tab.Navigator  tabBarOptions={{ showLabel: false,}} options={{ headerShown: false}} >
+      <Tab.Screen name="Contacts" component={ContactStackNavigator} options={{ tabBarIcon: ({ focused,size }) => (
             <Ionicons name={focused ? 'ios-people' : 'ios-people-outline'} size={size} color={"black"}/>
           ),
         }}
       />
-      <Tab.Screen name="Chat" component={ChatStackNavigator} options={{ headerShown: false, tabBarIcon: ({ focused,size }) => (
+      <Tab.Screen name="Chat" component={ChatStackNavigator} options={{ tabBarIcon: ({ focused,size }) => (
             <Ionicons name={focused ? 'ios-chatbubbles' : 'ios-chatbubbles-outline'} size={size} color={"black"}/>
           ),
         }}
       />
-      <Tab.Screen name="Info" component={UserInfoStackNavigator} options={{ headerShown: false, tabBarIcon: ({ focused,size }) => (
+      <Tab.Screen name="Info" component={UserInfoStackNavigator} options={{ tabBarIcon: ({ focused,size }) => (
             <Ionicons name={focused ? 'ios-person' : 'ios-person-outline'} size={size} color={"black"}/>
           ),
         }}

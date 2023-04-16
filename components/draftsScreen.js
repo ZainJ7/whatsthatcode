@@ -104,8 +104,6 @@ export default class DraftsScreen extends Component {
         this.fetchMessages(chat_id);
       }
     } catch (error) {
-      console.error(error);
-      this.fetchMessages(chat_id);
     }
   };
   
