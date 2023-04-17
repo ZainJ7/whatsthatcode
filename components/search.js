@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, FlatList,} from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  Picker,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import globalStyles from "../styles/global";
 
@@ -75,6 +84,20 @@ export default class Search extends Component {
     }
   };
 
+  handlePrevPage = () => {
+    const { offset } = this.state;
+    if (offset > 0) {
+      this.setState({ offset: offset - 5 }, this.fetchUsers);
+    }
+  };
+
+  handleNextPage = () => {
+    const { users, offset } = this.state;
+    if (users.length === 5) {
+      this.setState({ offset: offset + 5 }, this.fetchUsers);
+    }
+  };
+
   renderUsers = ({ item }) => (
     <View style={styles.contactContainer}>
       <Image
@@ -87,7 +110,7 @@ export default class Search extends Component {
         </Text>
         <Text style={styles.email}>{item.email}</Text>
         <View style={styles.buttonContainer}>
-          <View style={{ flexDirection: "column" }}>
+          <View style={styles.addButtonContainer}>
             <TouchableOpacity onPress={() => this.addContact(item.user_id)}>
               <Text style={styles.addUserButton}>Add User</Text>
             </TouchableOpacity>
@@ -105,35 +128,32 @@ export default class Search extends Component {
   );
 
   render() {
-    const { users } = this.state;
+    const { users, offset } = this.state;
+    const perPage = 5;
+    const totalPages = Math.ceil(users.length / perPage);
+    const currentPage = Math.floor(offset / perPage) + 1;
+    const startIndex = (currentPage - 1) * perPage;
+    const endIndex = startIndex + perPage;
+    const currentUsers = users.slice(startIndex, endIndex);
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Search</Text>
+        <Text style={globalStyles.title}>Search</Text>
         <View style={styles.inputContainer}>
           <TextInput
-            style={[styles.input, { width: "100%" }]}
+            style={styles.input}
             placeholder="Search"
             onChangeText={(text) => this.setState({ q: text })}
             value={this.state.q}
           />
-          <TextInput
-            style={[styles.input, { width: "100%" }]}
-            placeholder="Search in (all or contacts)"
-            onChangeText={(text) => this.setState({ search_in: text })}
-            value={this.state.search_in}
-          />
-          <TextInput
-            style={[styles.input, { width: "100%" }]}
-            placeholder="Limit (e.g. 20)"
-            onChangeText={(text) => this.setState({ limit: text })}
-            value={this.state.limit.toString()}
-          />
-          <TextInput
-            style={[styles.input, { width: "100%" }]}
-            placeholder="Offset (e.g. 0)"
-            onChangeText={(text) => this.setState({ offset: text })}
-            value={this.state.offset.toString()}
-          />
+          <Picker
+            style={styles.picker}
+            selectedValue={this.state.search_in}
+            onValueChange={(value) => this.setState({ search_in: value })}
+          >
+            <Picker.Item label="All" value="all" />
+            <Picker.Item label="Contacts" value="contacts" />
+          </Picker>
+
           <TouchableOpacity
             style={styles.searchButton}
             onPress={this.fetchUsers}
@@ -143,11 +163,41 @@ export default class Search extends Component {
         </View>
         <View style={styles.resultsContainer}>
           <FlatList
-            data={users}
+            data={currentUsers}
             renderItem={this.renderUsers}
             keyExtractor={(item) => item.user_id.toString()}
             style={styles.listContainer}
           />
+          <View style={styles.paginationContainer}>
+            <TouchableOpacity
+              style={[styles.paginationButton, { marginRight: 10 }]}
+              onPress={() =>
+                this.setState({
+                  offset: Math.max(offset - perPage, 0),
+                })
+              }
+              disabled={offset === 0}
+            >
+              <Text style={styles.paginationButtonText}>Previous</Text>
+            </TouchableOpacity>
+            <Text style={styles.paginationText}>
+              Page {currentPage} of {totalPages}
+            </Text>
+            <TouchableOpacity
+              style={[styles.paginationButton, { marginLeft: 10 }]}
+              onPress={() =>
+                this.setState({
+                  offset: Math.min(
+                    offset + perPage,
+                    (totalPages - 1) * perPage
+                  ),
+                })
+              }
+              disabled={offset === (totalPages - 1) * perPage}
+            >
+              <Text style={styles.paginationButtonText}>Next</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -160,17 +210,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "flex-start",
-  },
-  title: {
-    color: "white",
-    backgroundColor: "#128C7E",
-    padding: 10,
-    paddingHorizontal: 100,
-    fontSize: 35,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20,
-    alignSelf: "stretch",
   },
   inputContainer: {
     width: "90%",
@@ -253,4 +292,34 @@ const styles = StyleSheet.create({
   email: {
     paddingTop: 5,
   },
+  paginationContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
+  },
+  paginationButton: {
+    backgroundColor: "#128C7E",
+    padding: 5,
+    borderRadius: 5,
+    marginBottom: 5,
+  },
+  paginationButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  paginationText: {
+    fontSize: 16,
+  },
+  picker: {
+    borderWidth: 1,
+    borderColor: "#777",
+    padding: 8,
+    marginVertical: 5,
+    width: "100%",
+    borderRadius: 5,
+  },
+  addButtonContainer: {
+     flexDirection: "column"
+  }
 });

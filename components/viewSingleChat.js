@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   FlatList,
   TextInput,
@@ -29,12 +28,8 @@ export default class ViewSingleChat extends Component {
     this.interval = setInterval(this.fetchMessages, 3000); //refresh messages every 3 seconds
   }
 
-  componentWillUnmount() {
-    // Clear the interval when the component unmounts
-    clearInterval(this.interval);
-  }
 
-  fetchMessages = async (chat_id) => {
+  fetchMessages = async () => {
     //set interval 3 sec
     try {
       const { chat_id } = this.props.route.params;
@@ -91,10 +86,9 @@ export default class ViewSingleChat extends Component {
         this.fetchMessages(chat_id);
       }
     } catch (error) {
-      console.error(error);
       this.fetchMessages(chat_id);
     }
-    this.setState({ newMessage: "" }); // Clear the user input
+    this.setState({ newMessage: "" }); // Clear the user input after message is sen
   };
 
   handleDeleteMessage = async (message_id) => {
@@ -131,7 +125,7 @@ export default class ViewSingleChat extends Component {
           <Text style={styles.messageTextAway}>{item.message}</Text>
         )}
         <Text style={styles.timestamp}>
-          {new Date(item.timestamp * 1000).toLocaleString()}
+          {new Date(item.timestamp).toLocaleString()}
         </Text>
         <View style={styles.deleteAndUpdateButtonContainer}>
           <TouchableOpacity
@@ -157,7 +151,6 @@ export default class ViewSingleChat extends Component {
   );
 
   render() {
-    const { chat } = this.props.route.params;
     const { chat_id } = this.props.route.params;
     return (
       <View style={globalStyles.container}>

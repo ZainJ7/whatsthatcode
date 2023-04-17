@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Ionicons } from "@expo/vector-icons";
 import globalStyles from "../styles/global";
 
 export default class ViewChat extends Component {
@@ -106,7 +105,6 @@ export default class ViewChat extends Component {
   );
 
   render() {
-    const { navigation } = this.props;
     return (
       <View style={globalStyles.container}>
         <Text style={globalStyles.title}>Chat List</Text>
