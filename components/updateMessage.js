@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-} from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import globalStyles from "../styles/global";
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import globalStyles from '../styles/global';
 
 export default function UpdateMessage({ route, navigation }) {
   const { chat_id, message_id } = route.params;
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = async () => {
     try {
-      const token = await AsyncStorage.getItem("whatsthat_session_token");
+      const token = await AsyncStorage.getItem('whatsthat_session_token');
       const url = `http://localhost:3333/api/1.0.0/chat/${chat_id}/message/${message_id}`;
       const response = await fetch(url, {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
-          "X-Authorization": token,
+          'Content-Type': 'application/json',
+          'X-Authorization': token,
         },
         body: JSON.stringify({
           message: message,
@@ -31,11 +31,11 @@ export default function UpdateMessage({ route, navigation }) {
       if (response.ok) {
         navigation.goBack();
       } else {
-        setError("Failed to update message");
+        setError('Failed to update message');
       }
     } catch (error) {
       console.error(error);
-      setError("Something went wrong");
+      setError('Something went wrong');
     }
   };
 
@@ -62,22 +62,22 @@ export default function UpdateMessage({ route, navigation }) {
 
 const styles = StyleSheet.create({
   error: {
-    color: "red",
+    color: 'red',
     marginBottom: 10,
   },
   formItem: {
     padding: 20,
   },
   formTouch: {
-    backgroundColor: "#128C7E",
+    backgroundColor: '#128C7E',
     padding: 10,
     borderRadius: 10,
     margin: 10,
-    textAlign: "center",
+    textAlign: 'center',
   },
   formTouchText: {
-    color: "white",
-    fontWeight: "bold",
+    color: 'white',
+    fontWeight: 'bold',
     fontSize: 20,
   },
   formInput: {
@@ -86,10 +86,10 @@ const styles = StyleSheet.create({
     height: 50,
     width: 500,
     borderWidth: 1,
-    borderColor: "#777",
+    borderColor: '#777',
     padding: 8,
     marginVertical: 5,
-    width: "100%",
+    width: '100%',
     borderRadius: 5,
   },
 });

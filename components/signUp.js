@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   View,
   ScrollView,
@@ -6,21 +6,21 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-} from "react-native";
-import * as EmailValidator from "email-validator";
-import globalStyles from "../styles/global";
+} from 'react-native';
+import * as EmailValidator from 'email-validator';
+import globalStyles from '../styles/global';
 
 class SignUp extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      first_name: "",
-      last_name: "",
-      email: "",
-      password: "",
-      confirmPass: "",
-      error: "",
+      first_name: '',
+      last_name: '',
+      email: '',
+      password: '',
+      confirmPass: '',
+      error: '',
       success: false,
       submitted: false,
     };
@@ -30,21 +30,21 @@ class SignUp extends Component {
 
   _onPressButton() {
     this.setState({ submitted: true });
-    this.setState({ error: "" });
+    this.setState({ error: '' });
     this.setState({ success: false });
 
     if (!(this.state.email && this.state.password)) {
-      this.setState({ error: "Must enter email and password" });
+      this.setState({ error: 'Must enter email and password' });
       return;
     }
 
     if (!EmailValidator.validate(this.state.email)) {
-      this.setState({ error: "Must enter valid email" });
+      this.setState({ error: 'Must enter valid email' });
       return;
     }
 
     const PASSWORD_REGEX = new RegExp(
-      "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
+      '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
     );
     if (!PASSWORD_REGEX.test(this.state.password)) {
       this.setState({
@@ -54,16 +54,16 @@ class SignUp extends Component {
     }
 
     if (this.state.password !== this.state.confirmPass) {
-      this.setState({ error: "Passwords do not match" });
+      this.setState({ error: 'Passwords do not match' });
       return;
     }
 
     this.setState({ success: true });
 
-    return fetch("http://localhost:3333/api/1.0.0/user", {
-      method: "POST",
+    return fetch('http://localhost:3333/api/1.0.0/user', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         first_name: this.state.first_name,
@@ -76,16 +76,16 @@ class SignUp extends Component {
         if (response.status === 201) {
           return response.json();
         } else if (response.status === 400) {
-          throw "Failed validation";
+          throw 'Failed validation';
         } else {
-          throw "Something went wrong";
+          throw 'Something went wrong';
         }
       })
       .then((rJson) => {
         console.log(rJson);
-        this.setState({ error: "User added successfully" });
+        this.setState({ error: 'User added successfully' });
         this.setState({ submitted: false });
-        this.props.navigation.navigate("Login");
+        this.props.navigation.navigate('Login');
       })
       .catch((error) => {
         this.setState({ error: error });
@@ -179,7 +179,7 @@ class SignUp extends Component {
             )}
           </>
           <View style={styles.haveAccountContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
               <Text style={styles.haveAccountButton}>
                 Already have an account?
               </Text>
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   },
   formLabel: {
     fontSize: 20,
-    color: "black",
+    color: 'black',
   },
   formInput: {
     fontSize: 20,
@@ -205,45 +205,45 @@ const styles = StyleSheet.create({
     height: 40,
     width: 500,
     borderWidth: 1,
-    borderColor: "#777",
+    borderColor: '#777',
     padding: 5,
     marginVertical: 5,
-    width: "100%",
+    width: '100%',
     borderRadius: 5,
   },
   formTouch: {
-    backgroundColor: "#128C7E",
+    backgroundColor: '#128C7E',
     padding: 10,
     borderRadius: 10,
     margin: 10,
-    textAlign: "center",
+    textAlign: 'center',
   },
   formTouchText: {
-    color: "white",
-    fontWeight: "bold",
+    color: 'white',
+    fontWeight: 'bold',
     fontSize: 20,
   },
   error: {
-    color: "red",
+    color: 'red',
     fontSize: 20,
-    textAlign: "center",
+    textAlign: 'center',
   },
   success: {
-    color: "green",
+    color: 'green',
     fontSize: 20,
     marginTop: 5,
     marginBottom: 10,
-    textAlign: "center",
+    textAlign: 'center',
   },
   haveAccountContainer: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 10,
   },
   haveAccountButton: {
-    color: "black",
+    color: 'black',
     fontSize: 25,
-    textDecorationLine: "underline",
+    textDecorationLine: 'underline',
   },
 });
 

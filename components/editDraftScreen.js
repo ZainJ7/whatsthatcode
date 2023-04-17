@@ -1,13 +1,13 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-} from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import globalStyles from "../styles/global";
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import globalStyles from '../styles/global';
 
 export default class EditDraftScreen extends Component {
   constructor(props) {
@@ -30,7 +30,7 @@ export default class EditDraftScreen extends Component {
       const drafts = [...this.props.route.params.drafts];
       drafts[draftIndex] = draftText;
       this.props.route.params.updateDrafts(drafts);
-      await AsyncStorage.setItem("drafts", JSON.stringify(drafts));
+      await AsyncStorage.setItem('drafts', JSON.stringify(drafts));
       this.props.navigation.goBack();
     }
   };
@@ -68,27 +68,27 @@ const styles = StyleSheet.create({
     height: 50,
     width: 500,
     borderWidth: 1,
-    borderColor: "#777",
+    borderColor: '#777',
     padding: 8,
     marginVertical: 5,
-    width: "100%",
+    width: '100%',
     borderRadius: 5,
   },
   saveButton: {
-    backgroundColor: "#2196F3",
+    backgroundColor: '#2196F3',
     padding: 10,
     borderRadius: 5,
   },
   saveButtonText: {
-    color: "#fff",
-    textAlign: "center",
-    fontWeight: "bold",
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
   formTouch: {
-    backgroundColor: "#128C7E",
+    backgroundColor: '#128C7E',
     padding: 10,
     borderRadius: 10,
     margin: 10,
-    textAlign: "center",
+    textAlign: 'center',
   },
 });

@@ -3,10 +3,10 @@ import {
   CameraType,
   onCameraReady,
   CameraPictureOptions,
-} from "expo-camera";
-import { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+} from 'expo-camera';
+import { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CameraSendToServer() {
   const [type, setType] = useState(CameraType.back);
@@ -17,7 +17,7 @@ export default function CameraSendToServer() {
     setType((current) =>
       current === CameraType.back ? CameraType.front : CameraType.back
     );
-    console.log("Camera: ", type);
+    console.log('Camera: ', type);
   }
 
   async function takePhoto() {
@@ -32,22 +32,22 @@ export default function CameraSendToServer() {
   }
 
   async function sendToServer(data) {
-    const token = await AsyncStorage.getItem("whatsthat_session_token");
-    const userId = await AsyncStorage.getItem("whatsthat_user_id");
+    const token = await AsyncStorage.getItem('whatsthat_session_token');
+    const userId = await AsyncStorage.getItem('whatsthat_user_id');
 
     let res = await fetch(data.uri);
     let blob = await res.blob();
 
     return fetch(`http://localhost:3333/api/1.0.0/user/${userId}/photo`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "image/png",
-        "X-Authorization": token,
+        'Content-Type': 'image/png',
+        'X-Authorization': token,
       },
       body: blob,
     })
       .then((response) => {
-        console.log("Picture added", response);
+        console.log('Picture added', response);
       })
       .catch((err) => {
         console.log(err);
@@ -82,22 +82,22 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonContainer: {
-    alignSelf: "flex-end",
+    alignSelf: 'flex-end',
     padding: 5,
     margin: 5,
   },
   button: {
-    backgroundColor: "#128C7E",
+    backgroundColor: '#128C7E',
     paddingHorizontal: 10,
     paddingVertical: 20,
     borderRadius: 5,
     fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
+    fontWeight: 'bold',
+    color: 'white',
   },
   text: {
-    color: "#ffffff",
+    color: '#ffffff',
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 });

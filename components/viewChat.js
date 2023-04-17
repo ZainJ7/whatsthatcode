@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -6,9 +6,9 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
-} from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import globalStyles from "../styles/global";
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import globalStyles from '../styles/global';
 
 export default class ViewChat extends Component {
   constructor(props) {
@@ -31,11 +31,11 @@ export default class ViewChat extends Component {
 
   fetchChats = async () => {
     try {
-      const token = await AsyncStorage.getItem("whatsthat_session_token");
-      const url = "http://localhost:3333/api/1.0.0/chat";
+      const token = await AsyncStorage.getItem('whatsthat_session_token');
+      const url = 'http://localhost:3333/api/1.0.0/chat';
       const response = await fetch(url, {
         headers: {
-          "X-Authorization": token,
+          'X-Authorization': token,
         },
       });
       const data = await response.json();
@@ -49,21 +49,21 @@ export default class ViewChat extends Component {
 
   createChat = async () => {
     try {
-      const token = await AsyncStorage.getItem("whatsthat_session_token");
-      const url = "http://localhost:3333/api/1.0.0/chat";
+      const token = await AsyncStorage.getItem('whatsthat_session_token');
+      const url = 'http://localhost:3333/api/1.0.0/chat';
       const response = await fetch(url, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "X-Authorization": token,
-          "Content-Type": "application/json",
+          'X-Authorization': token,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: "New Chat",
+          name: 'New Chat',
         }),
       });
       const data = await response.json();
       const chatId = data.chat_id;
-      this.props.navigation.navigate("ViewSingleChat", { chat_id: chatId });
+      this.props.navigation.navigate('ViewSingleChat', { chat_id: chatId });
     } catch (error) {
       console.error(error);
     }
@@ -73,7 +73,7 @@ export default class ViewChat extends Component {
     <TouchableOpacity
       style={styles.chatContainer}
       onPress={() =>
-        this.props.navigation.navigate("ViewSingleChat", {
+        this.props.navigation.navigate('ViewSingleChat', {
           chat_id: item.chat_id,
         })
       }
@@ -87,7 +87,7 @@ export default class ViewChat extends Component {
           <TouchableOpacity
             style={styles.updateButton}
             onPress={() =>
-              this.props.navigation.navigate("UpdateChat", {
+              this.props.navigation.navigate('UpdateChat', {
                 chat_id: item.chat_id,
               })
             }
@@ -125,21 +125,21 @@ export default class ViewChat extends Component {
 const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
-    width: "100%",
+    width: '100%',
     paddingHorizontal: 10,
   },
   chatContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "#dcdcdc",
+    borderBottomColor: '#dcdcdc',
     minHeight: 100,
     marginVertical: 10,
     marginHorizontal: 10,
     borderRadius: 10,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -154,52 +154,52 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   chatName: {
     fontSize: 16,
-    color: "black",
+    color: 'black',
     marginVertical: 10,
   },
   buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   updateButton: {
-    backgroundColor: "#128C7E",
+    backgroundColor: '#128C7E',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 5,
   },
   updateButtonText: {
-    color: "#ffffff",
+    color: '#ffffff',
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   timeContainer: {
-    alignItems: "flex-end",
-    justifyContent: "center",
+    alignItems: 'flex-end',
+    justifyContent: 'center',
     marginRight: 10,
   },
   timestamp: {
     fontSize: 14,
-    color: "#8e8e8e",
+    color: '#8e8e8e',
   },
   createButton: {
-    backgroundColor: "#128C7E",
+    backgroundColor: '#128C7E',
     borderRadius: 5,
     paddingHorizontal: 10,
     paddingVertical: 5,
     marginVertical: 10,
     marginHorizontal: 10,
-    alignSelf: "stretch",
-    justifyContent: "center",
-    alignItems: "center",
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   createButtonText: {
-    color: "#ffffff",
+    color: '#ffffff',
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 });

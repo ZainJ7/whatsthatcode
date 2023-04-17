@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { View, Text, Image, StyleSheet, FlatList } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import globalStyles from "../styles/global";
+import React, { Component } from 'react';
+import { View, Text, Image, StyleSheet, FlatList } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import globalStyles from '../styles/global';
 
 export default class ContactList extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ export default class ContactList extends Component {
 
   async componentDidMount() {
     this.fetchContacts();
-    this.interval = setInterval(this.fetchContacts, 5000); 
+    this.interval = setInterval(this.fetchContacts, 5000);
   }
 
   componentWillUnmount() {
@@ -25,11 +25,11 @@ export default class ContactList extends Component {
 
   fetchContacts = async () => {
     try {
-      const token = await AsyncStorage.getItem("whatsthat_session_token");
+      const token = await AsyncStorage.getItem('whatsthat_session_token');
       const url = `http://localhost:3333/api/1.0.0/contacts`;
       const response = await fetch(url, {
         headers: {
-          "X-Authorization": token,
+          'X-Authorization': token,
         },
       });
       const data = await response.json();
@@ -39,9 +39,9 @@ export default class ContactList extends Component {
           const photoUrlResponse = await fetch(
             `http://localhost:3333/api/1.0.0/user/${contact.user_id}/photo`,
             {
-              method: "GET",
+              method: 'GET',
               headers: {
-                "X-Authorization": token,
+                'X-Authorization': token,
               },
             }
           );
@@ -61,13 +61,13 @@ export default class ContactList extends Component {
 
   blockContact = async (contactId) => {
     try {
-      const token = await AsyncStorage.getItem("whatsthat_session_token");
+      const token = await AsyncStorage.getItem('whatsthat_session_token');
       const url = `http://localhost:3333/api/1.0.0/user/${contactId}/block`;
       const response = await fetch(url, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "X-Authorization": token,
+          'Content-Type': 'application/json',
+          'X-Authorization': token,
         },
       });
       if (response.ok) {
@@ -76,17 +76,17 @@ export default class ContactList extends Component {
             (contact) => contact.user_id !== contactId
           ),
         }));
-        this.setState({ message: "Contact blocked succsessfully!." }, () => {
+        this.setState({ message: 'Contact blocked succsessfully!.' }, () => {
           setTimeout(() => {
-            this.setState({ message: "" });
+            this.setState({ message: '' });
           }, 3000);
-        }); 
+        });
       } else {
-        this.setState({ message: "Failed to block contact." }, () => {
+        this.setState({ message: 'Failed to block contact.' }, () => {
           setTimeout(() => {
-            this.setState({ message: "" });
+            this.setState({ message: '' });
           }, 3000);
-        }); 
+        });
       }
     } catch (error) {
       console.error(error);
@@ -95,12 +95,12 @@ export default class ContactList extends Component {
 
   deleteContact = async (contactId) => {
     try {
-      const token = await AsyncStorage.getItem("whatsthat_session_token");
+      const token = await AsyncStorage.getItem('whatsthat_session_token');
       const url = `http://localhost:3333/api/1.0.0/user/${contactId}/contact`;
       const response = await fetch(url, {
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
-          "X-Authorization": token,
+          'X-Authorization': token,
         },
       });
       if (response.ok) {
@@ -109,17 +109,17 @@ export default class ContactList extends Component {
             (contact) => contact.user_id !== contactId
           ),
         }));
-        this.setState({ message: "Contact Deleted Successfully!" }, () => {
+        this.setState({ message: 'Contact Deleted Successfully!' }, () => {
           setTimeout(() => {
-            this.setState({ message: "" });
+            this.setState({ message: '' });
           }, 3000);
-        }); 
+        });
       } else {
-        this.setState({ message: "Failed to delete contact." }, () => {
+        this.setState({ message: 'Failed to delete contact.' }, () => {
           setTimeout(() => {
-            this.setState({ message: "" });
+            this.setState({ message: '' });
           }, 3000);
-        }); 
+        });
       }
     } catch (error) {
       console.error(error);
@@ -158,11 +158,13 @@ export default class ContactList extends Component {
       <View style={globalStyles.container}>
         <Text style={globalStyles.title}>Contact List</Text>
         <View style={styles.addButtonContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate("BlockedContact")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('BlockedContact')}
+          >
             <Text style={styles.blockButton}>Blocked Contacts</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.message}>{this.state.message}</Text> 
+        <Text style={styles.message}>{this.state.message}</Text>
         <FlatList
           data={this.state.contacts}
           renderItem={this.renderContact}
@@ -177,20 +179,20 @@ export default class ContactList extends Component {
 const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   contactContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "#dcdcdc",
+    borderBottomColor: '#dcdcdc',
     minHeight: 100,
     marginVertical: 10,
     marginHorizontal: 10,
     borderRadius: 10,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -207,52 +209,52 @@ const styles = StyleSheet.create({
   },
   contactInfo: {
     flex: 1,
-    justifyContent: "center",
-    borderBottomColor: "#ddd",
+    justifyContent: 'center',
+    borderBottomColor: '#ddd',
     borderBottomWidth: 1,
     paddingBottom: 10,
   },
   name: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   deleteButton: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
-    backgroundColor: "red",
+    fontWeight: 'bold',
+    color: 'white',
+    backgroundColor: 'red',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,
   },
   blockButton: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
-    backgroundColor: "orange",
+    fontWeight: 'bold',
+    color: 'white',
+    backgroundColor: 'orange',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,
   },
   message: {
     fontSize: 20,
-    alignSelf: "stretch",
-    textAlign: "center",
+    alignSelf: 'stretch',
+    textAlign: 'center',
   },
   buttonContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingTop: 10,
   },
   addButtonContainer: {
-    width: "100%",
-    alignItems: "center",
+    width: '100%',
+    alignItems: 'center',
     marginBottom: 20,
   },
   blockButton: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
-    backgroundColor: "#128C7E",
+    fontWeight: 'bold',
+    color: 'white',
+    backgroundColor: '#128C7E',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,

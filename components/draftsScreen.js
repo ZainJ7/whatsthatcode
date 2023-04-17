@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -6,9 +6,9 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
-} from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import globalStyles from "../styles/global";
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import globalStyles from '../styles/global';
 
 export default class DraftsScreen extends Component {
   constructor(props) {
@@ -16,13 +16,13 @@ export default class DraftsScreen extends Component {
 
     this.state = {
       drafts: [],
-      newDraft: "",
-      message: "",
+      newDraft: '',
+      message: '',
     };
   }
 
   async componentDidMount() {
-    const drafts = await AsyncStorage.getItem("drafts");
+    const drafts = await AsyncStorage.getItem('drafts');
     if (drafts !== null) {
       this.setState({ drafts: JSON.parse(drafts) });
     }
@@ -36,11 +36,8 @@ export default class DraftsScreen extends Component {
     const { drafts, newDraft } = this.state;
     if (newDraft) {
       const updatedDrafts = [...drafts, newDraft];
-      this.setState({ drafts: updatedDrafts, newDraft: "" });
-      await AsyncStorage.setItem(
-        "drafts",
-        JSON.stringify(updatedDrafts)
-      );
+      this.setState({ drafts: updatedDrafts, newDraft: '' });
+      await AsyncStorage.setItem('drafts', JSON.stringify(updatedDrafts));
     }
   };
 
@@ -48,13 +45,13 @@ export default class DraftsScreen extends Component {
     const { drafts } = this.state;
     drafts.splice(index, 1);
     this.setState({ drafts: drafts });
-    await AsyncStorage.setItem("drafts", JSON.stringify(drafts));
+    await AsyncStorage.setItem('drafts', JSON.stringify(drafts));
   };
 
   handleEditDraft = async (index) => {
     const { drafts } = this.state;
     const draftText = drafts[index];
-    this.props.navigation.navigate("EditDraftScreen", {
+    this.props.navigation.navigate('EditDraftScreen', {
       draftIndex: index,
       draftText: draftText,
       drafts: drafts,
@@ -69,13 +66,13 @@ export default class DraftsScreen extends Component {
   handleSendDraft = async (draft) => {
     const { chat_id } = this.props.route.params;
     try {
-      const token = await AsyncStorage.getItem("whatsthat_session_token");
+      const token = await AsyncStorage.getItem('whatsthat_session_token');
       const url = `http://localhost:3333/api/1.0.0/chat/${chat_id}/message`;
       const response = await fetch(url, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "X-Authorization": token,
-          "Content-Type": "application/json",
+          'X-Authorization': token,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           message: draft,
@@ -87,27 +84,23 @@ export default class DraftsScreen extends Component {
         this.setState(
           {
             messages: [...this.state.messages, data],
-            newDraft: "",
-            
+            newDraft: '',
           },
           () => {
             this.fetchMessages(chat_id);
           }
         );
-        this.setState({ message: "Message Sent!" }, () => {
-            setTimeout(() => {
-              this.setState({ message: "" });
-            }, 3000);
-          });
+        this.setState({ message: 'Message Sent!' }, () => {
+          setTimeout(() => {
+            this.setState({ message: '' });
+          }, 3000);
+        });
       } else {
         console.error(data.message);
         this.fetchMessages(chat_id);
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
-  
-  
 
   renderDraft = ({ item, index }) => (
     <View style={styles.draftContainer}>
@@ -134,27 +127,26 @@ export default class DraftsScreen extends Component {
       </View>
     </View>
   );
-  
 
   render() {
     return (
-        <View style={globalStyles.container}>
+      <View style={globalStyles.container}>
         <Text style={globalStyles.title}>Drafts</Text>
         <View style={styles.formItem}>
-        <TextInput
-          style={styles.formInput}
-          placeholder="Enter Your Draft"
-          value={this.state.newDraft}
-          onChangeText={this.handleNewDraft}
-        />
+          <TextInput
+            style={styles.formInput}
+            placeholder="Enter Your Draft"
+            value={this.state.newDraft}
+            onChangeText={this.handleNewDraft}
+          />
         </View>
         <View style={styles.formItem}>
-        <TouchableOpacity
-          style={styles.formTouch}
-          onPress={this.handleSaveDraft}
-        >
-          <Text style={styles.formTouchText}>Save Draft</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.formTouch}
+            onPress={this.handleSaveDraft}
+          >
+            <Text style={styles.formTouchText}>Save Draft</Text>
+          </TouchableOpacity>
         </View>
         <Text style={styles.message}>{this.state.message}</Text>
         <FlatList
@@ -170,18 +162,18 @@ export default class DraftsScreen extends Component {
 
 const styles = StyleSheet.create({
   draftContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "#dcdcdc",
+    borderBottomColor: '#dcdcdc',
     minHeight: 100,
     marginVertical: 10,
     marginHorizontal: 10,
     borderRadius: 10,
-    overflow: "hidden",
-    shadowColor: "#000",
+    overflow: 'hidden',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -196,27 +188,27 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   draftButtonsContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   editButton: {
-    backgroundColor: "orange",
+    backgroundColor: 'orange',
     padding: 20,
     borderRadius: 5,
     marginRight: 5,
   },
   buttonText: {
-    color: "#fff",
-    textAlign: "center",
-    fontWeight: "bold",
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
   deleteButton: {
-    backgroundColor: "red",
-    padding:20,
+    backgroundColor: 'red',
+    padding: 20,
     borderRadius: 5,
     marginRight: 5,
   },
   sendButton: {
-    backgroundColor: "green",
+    backgroundColor: 'green',
     padding: 20,
     borderRadius: 5,
     marginRight: 5,
@@ -227,23 +219,23 @@ const styles = StyleSheet.create({
   },
   message: {
     fontSize: 20,
-    color: "black",
-    alignSelf: "stretch",
-    textAlign: "center",
+    color: 'black',
+    alignSelf: 'stretch',
+    textAlign: 'center',
   },
   formItem: {
     padding: 20,
   },
   formTouch: {
-    backgroundColor: "#128C7E",
+    backgroundColor: '#128C7E',
     padding: 10,
     borderRadius: 10,
     margin: 10,
-    textAlign: "center",
+    textAlign: 'center',
   },
   formTouchText: {
-    color: "white",
-    fontWeight: "bold",
+    color: 'white',
+    fontWeight: 'bold',
     fontSize: 20,
   },
   formInput: {
@@ -252,10 +244,10 @@ const styles = StyleSheet.create({
     height: 50,
     width: 500,
     borderWidth: 1,
-    borderColor: "#777",
+    borderColor: '#777',
     padding: 8,
     marginVertical: 5,
-    width: "100%",
+    width: '100%',
     borderRadius: 5,
   },
 });

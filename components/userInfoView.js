@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import globalStyles from "../styles/global";
+import React, { Component } from 'react';
+import { View, Text, Image, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import globalStyles from '../styles/global';
 
 export default class UserInfoView extends Component {
   constructor(props) {
@@ -18,16 +18,16 @@ export default class UserInfoView extends Component {
   async componentDidMount() {
     this.fetchUserInfo();
     this.interval = setInterval(this.fetchUserInfo, 3000); //refresh messages every 3 seconds
-    const token = await AsyncStorage.getItem("whatsthat_session_token");
-    const userId = await AsyncStorage.getItem("whatsthat_user_id");
+    const token = await AsyncStorage.getItem('whatsthat_session_token');
+    const userId = await AsyncStorage.getItem('whatsthat_user_id');
     this.get_profile_image(token, userId);
   }
 
   get_profile_image(token, userId) {
     fetch(`http://localhost:3333/api/1.0.0/user/${userId}/photo`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "X-Authorization": token,
+        'X-Authorization': token,
       },
     })
       .then((res) => {
@@ -48,12 +48,12 @@ export default class UserInfoView extends Component {
 
   fetchUserInfo = async () => {
     try {
-      const userId = Number(await AsyncStorage.getItem("whatsthat_user_id"));
-      const token = await AsyncStorage.getItem("whatsthat_session_token");
+      const userId = Number(await AsyncStorage.getItem('whatsthat_user_id'));
+      const token = await AsyncStorage.getItem('whatsthat_session_token');
       const url = `http://localhost:3333/api/1.0.0/user/${userId}`;
       const response = await fetch(url, {
         headers: {
-          "X-Authorization": token,
+          'X-Authorization': token,
         },
       });
       const data = await response.json();
@@ -84,13 +84,13 @@ export default class UserInfoView extends Component {
         </View>
         <TouchableOpacity
           style={styles.editInfoContainer}
-          onPress={() => navigation.navigate("EditInfo")}
+          onPress={() => navigation.navigate('EditInfo')}
         >
           <Text style={styles.editInfoButton}>Edit Info</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.editInfoContainer}
-          onPress={() => navigation.navigate("UploadPhoto")}
+          onPress={() => navigation.navigate('UploadPhoto')}
         >
           <Text style={styles.editInfoButton}>Upload Profile Photo</Text>
         </TouchableOpacity>
@@ -101,16 +101,16 @@ export default class UserInfoView extends Component {
 
 const styles = StyleSheet.create({
   infoContainer: {
-    alignItems: "flex-start",
-    backgroundColor: "#ffffff",
+    alignItems: 'flex-start',
+    backgroundColor: '#ffffff',
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "#dcdcdc",
+    borderBottomColor: '#dcdcdc',
     minHeight: 300,
     marginVertical: 10,
     marginHorizontal: 10,
     borderRadius: 10,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   label: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 25,
     marginBottom: 10,
   },
@@ -128,25 +128,25 @@ const styles = StyleSheet.create({
     fontSize: 25,
     marginBottom: 20,
     marginLeft: 10,
-    color: "#383838",
+    color: '#383838',
   },
   editInfoContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#128C7E",
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#128C7E',
     borderRadius: 10,
     marginHorizontal: 40,
     padding: 10,
     marginVertical: 10,
   },
   editInfoButton: {
-    backgroundColor: "#128C7E",
+    backgroundColor: '#128C7E',
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 5,
     fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
+    fontWeight: 'bold',
+    color: 'white',
   },
   photo: {
     width: 100,
@@ -154,10 +154,10 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   photoView: {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 20,
   },
 });

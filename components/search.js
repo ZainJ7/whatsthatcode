@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   FlatList,
   Picker,
-} from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import globalStyles from "../styles/global";
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import globalStyles from '../styles/global';
 
 export default class Search extends Component {
   constructor(props) {
@@ -18,12 +18,12 @@ export default class Search extends Component {
 
     this.state = {
       users: [],
-      q: "",
-      search_in: "",
-      limit: "",
+      q: '',
+      search_in: '',
+      limit: '',
       offset: 0,
-      userId: "",
-      message: "",
+      userId: '',
+      message: '',
     };
   }
 
@@ -33,13 +33,13 @@ export default class Search extends Component {
 
   addContact = async (userId) => {
     try {
-      const token = await AsyncStorage.getItem("whatsthat_session_token");
+      const token = await AsyncStorage.getItem('whatsthat_session_token');
       const url = `http://localhost:3333/api/1.0.0/user/${userId}/contact`;
       const response = await fetch(url, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "X-Authorization": token,
+          'Content-Type': 'application/json',
+          'X-Authorization': token,
         },
         body: JSON.stringify({}),
       });
@@ -47,12 +47,12 @@ export default class Search extends Component {
         this.setState((prevState) => ({
           message: {
             ...prevState.message,
-            [userId]: "Contact added successfully!",
+            [userId]: 'Contact added successfully!',
           },
         }));
       } else {
         this.setState((prevState) => ({
-          message: { ...prevState.message, [userId]: "Failed to add contact" },
+          message: { ...prevState.message, [userId]: 'Failed to add contact' },
         }));
       }
       setTimeout(() => {
@@ -68,11 +68,11 @@ export default class Search extends Component {
   fetchUsers = async () => {
     try {
       const { q, search_in, limit, offset } = this.state;
-      const token = await AsyncStorage.getItem("whatsthat_session_token");
+      const token = await AsyncStorage.getItem('whatsthat_session_token');
       const url = `http://localhost:3333/api/1.0.0/search?q=${q}&search_in=${search_in}&limit=${limit}&offset=${offset}`;
       const response = await fetch(url, {
         headers: {
-          "X-Authorization": token,
+          'X-Authorization': token,
         },
       });
       const data = await response.json();
@@ -207,56 +207,56 @@ export default class Search extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "flex-start",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   inputContainer: {
-    width: "90%",
+    width: '90%',
     marginBottom: 10,
   },
   input: {
     borderWidth: 1,
-    borderColor: "#777",
+    borderColor: '#777',
     padding: 8,
     marginVertical: 5,
-    width: "100%",
+    width: '100%',
     borderRadius: 5,
   },
   listContainer: {
     flex: 1,
-    width: "100%",
+    width: '100%',
     paddingHorizontal: 10,
   },
   searchButton: {
-    backgroundColor: "#128C7E",
+    backgroundColor: '#128C7E',
     padding: 10,
     borderRadius: 10,
     margin: 10,
   },
   searchButtonText: {
-    color: "white",
-    fontWeight: "bold",
+    color: 'white',
+    fontWeight: 'bold',
     fontSize: 20,
   },
   resultsContainer: {
     flex: 1,
-    width: "90%",
+    width: '90%',
     marginTop: 20,
   },
   contactContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "#dcdcdc",
+    borderBottomColor: '#dcdcdc',
     minHeight: 100,
     marginVertical: 10,
     marginHorizontal: 10,
     borderRadius: 10,
-    overflow: "hidden",
-    shadowColor: "#000",
+    overflow: 'hidden',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -267,45 +267,45 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   addUserButton: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
-    backgroundColor: "#128C7E",
+    fontWeight: 'bold',
+    color: 'white',
+    backgroundColor: '#128C7E',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,
   },
   buttonContainer: {
     paddingTop: 10,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   message: {
     paddingTop: 10,
-    color: "green",
-    fontWeight: "bold",
+    color: 'green',
+    fontWeight: 'bold',
     width: 120,
   },
   email: {
     paddingTop: 5,
   },
   paginationContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 20,
   },
   paginationButton: {
-    backgroundColor: "#128C7E",
+    backgroundColor: '#128C7E',
     padding: 5,
     borderRadius: 5,
     marginBottom: 5,
   },
   paginationButtonText: {
-    color: "white",
-    fontWeight: "bold",
+    color: 'white',
+    fontWeight: 'bold',
     fontSize: 16,
   },
   paginationText: {
@@ -313,13 +313,13 @@ const styles = StyleSheet.create({
   },
   picker: {
     borderWidth: 1,
-    borderColor: "#777",
+    borderColor: '#777',
     padding: 8,
     marginVertical: 5,
-    width: "100%",
+    width: '100%',
     borderRadius: 5,
   },
   addButtonContainer: {
-     flexDirection: "column"
-  }
+    flexDirection: 'column',
+  },
 });

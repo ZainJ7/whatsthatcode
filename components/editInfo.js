@@ -1,33 +1,40 @@
-import React, { Component } from "react";
-import {View, ScrollView, Text, TextInput, TouchableOpacity, StyleSheet,} from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import globalStyles from "../styles/global";
+import React, { Component } from 'react';
+import {
+  View,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import globalStyles from '../styles/global';
 
 class EditInfo extends Component {
   state = {
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    message: ""
+    first_name: '',
+    last_name: '',
+    email: '',
+    password: '',
+    message: '',
   };
 
   async componentDidMount() {
-    const token = await AsyncStorage.getItem("whatsthat_session_token");
-    const userId = await AsyncStorage.getItem("whatsthat_user_id");
+    const token = await AsyncStorage.getItem('whatsthat_session_token');
+    const userId = await AsyncStorage.getItem('whatsthat_user_id');
 
     return fetch(`http://localhost:3333/api/1.0.0/user/${userId}`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
-        "X-Authorization": token,
+        'Content-Type': 'application/json',
+        'X-Authorization': token,
       },
     })
       .then((response) => {
         if (response.status === 200) {
           return response.json();
         } else {
-          throw "Something went wrong";
+          throw 'Something went wrong';
         }
       })
       .then((rJson) => {
@@ -42,19 +49,18 @@ class EditInfo extends Component {
       });
   }
 
-
   editInfo = async () => {
-    const token = await AsyncStorage.getItem("whatsthat_session_token");
-    const userId = await AsyncStorage.getItem("whatsthat_user_id");
+    const token = await AsyncStorage.getItem('whatsthat_session_token');
+    const userId = await AsyncStorage.getItem('whatsthat_user_id');
 
     try {
       const response = await fetch(
         `http://localhost:3333/api/1.0.0/user/${userId}`,
         {
-          method: "PATCH",
+          method: 'PATCH',
           headers: {
-            "Content-Type": "application/json",
-            "X-Authorization": token,
+            'Content-Type': 'application/json',
+            'X-Authorization': token,
           },
           body: JSON.stringify({
             first_name: this.state.first_name,
@@ -65,34 +71,33 @@ class EditInfo extends Component {
         }
       );
       if (response.status === 200) {
-        this.setState({ message: "User Updated Successfully!" }, () => {
+        this.setState({ message: 'User Updated Successfully!' }, () => {
           setTimeout(() => {
-            this.setState({ message: "" });
+            this.setState({ message: '' });
           }, 3000);
         });
       } else if (response.status === 400) {
-        this.setState({ message: "Failed Validation" }, () => {
+        this.setState({ message: 'Failed Validation' }, () => {
           setTimeout(() => {
-            this.setState({ message: "" });
+            this.setState({ message: '' });
           }, 3000);
         });
-        throw "Failed validation";
+        throw 'Failed validation';
       } else {
-        this.setState({ message: "Something Went Wrong" }, () => {
+        this.setState({ message: 'Something Went Wrong' }, () => {
           setTimeout(() => {
-            this.setState({ message: "" });
+            this.setState({ message: '' });
           }, 3000);
         });
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   render() {
     return (
       <View style={globalStyles.container}>
         <Text style={globalStyles.title}>Edit User Info</Text>
-        <Text style={styles.message}>{this.state.message}</Text> 
+        <Text style={styles.message}>{this.state.message}</Text>
         <ScrollView>
           <View style={styles.formItem}>
             <Text style={styles.formLabel}>First Name:</Text>
@@ -120,7 +125,8 @@ class EditInfo extends Component {
               placeholder=" Enter email..."
               style={styles.formInput}
               onChangeText={(email) => this.setState({ email })}
-              value={this.state.email}/>
+              value={this.state.email}
+            />
           </View>
 
           <View style={styles.formItem}>
@@ -130,7 +136,8 @@ class EditInfo extends Component {
               style={styles.formInput}
               secureTextEntry
               onChangeText={(password) => this.setState({ password })}
-              value={this.state.password}/>
+              value={this.state.password}
+            />
           </View>
 
           <View style={styles.formItem}>
@@ -138,8 +145,7 @@ class EditInfo extends Component {
               <Text style={styles.formTouchText}>Edit Info</Text>
             </TouchableOpacity>
           </View>
-          <>
-          </>
+          <></>
         </ScrollView>
       </View>
     );
@@ -152,7 +158,7 @@ const styles = StyleSheet.create({
   },
   formLabel: {
     fontSize: 30,
-    color: "black",
+    color: 'black',
   },
   formInput: {
     fontSize: 20,
@@ -160,28 +166,28 @@ const styles = StyleSheet.create({
     height: 50,
     width: 500,
     borderWidth: 1,
-    borderColor: "#777",
+    borderColor: '#777',
     padding: 8,
     marginVertical: 5,
-    width: "100%",
+    width: '100%',
     borderRadius: 5,
   },
   formTouch: {
-    backgroundColor: "#128C7E",
+    backgroundColor: '#128C7E',
     padding: 10,
     borderRadius: 10,
     margin: 10,
-    textAlign: "center",
+    textAlign: 'center',
   },
   formTouchText: {
-    color: "white",
-    fontWeight: "bold",
+    color: 'white',
+    fontWeight: 'bold',
     fontSize: 20,
   },
   message: {
     fontSize: 20,
-    alignSelf: "stretch",
-    textAlign: "center",
+    alignSelf: 'stretch',
+    textAlign: 'center',
   },
 });
 

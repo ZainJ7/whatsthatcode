@@ -1,13 +1,19 @@
-import React, { Component } from "react";
-import {View, ScrollView, Text, TextInput, TouchableOpacity, StyleSheet,} from "react-native";
-import * as EmailValidator from "email-validator";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import globalStyles from "../styles/global";
+import React, { Component } from 'react';
+import {
+  View,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+import * as EmailValidator from 'email-validator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import globalStyles from '../styles/global';
 
 class Login extends Component {
-
   componentDidMount() {
-    this.unsubscribe = this.props.navigation.addListener("focus", () => {
+    this.unsubscribe = this.props.navigation.addListener('focus', () => {
       this.checkLoggedIn();
     });
   }
@@ -17,9 +23,9 @@ class Login extends Component {
   }
 
   checkLoggedIn = async () => {
-    const value = await AsyncStorage.getItem("whatsthat_session_token");
+    const value = await AsyncStorage.getItem('whatsthat_session_token');
     if (value == null) {
-      this.props.navigation.navigate("SignUp");
+      this.props.navigation.navigate('SignUp');
     }
   };
 
@@ -27,9 +33,9 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      email: "ashley.williams@mmu.ac.uk",
-      password: "Wr3xh4m!",
-      error: "",
+      email: 'ashley.williams@mmu.ac.uk',
+      password: 'Wr3xh4m!',
+      error: '',
       success: false,
       submitted: false,
     };
@@ -39,25 +45,25 @@ class Login extends Component {
 
   _onPressButton() {
     this.setState({ submitted: true });
-    this.setState({ error: "" });
+    this.setState({ error: '' });
     this.setState({ success: false });
 
     if (!(this.state.email && this.state.password)) {
-      this.setState({ error: "Must enter email and password" });
+      this.setState({ error: 'Must enter email and password' });
       return;
     }
 
     if (!EmailValidator.validate(this.state.email)) {
-      this.setState({ error: "Must enter valid email" });
+      this.setState({ error: 'Must enter valid email' });
       return;
     }
 
     this.setState({ success: true });
 
-    return fetch("http://localhost:3333/api/1.0.0/login", {
-      method: "POST",
+    return fetch('http://localhost:3333/api/1.0.0/login', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         email: this.state.email,
@@ -68,22 +74,22 @@ class Login extends Component {
         if (response.status === 200) {
           return response.json();
         } else if (response.status === 400) {
-          throw "Failed validation";
+          throw 'Failed validation';
         } else {
-          throw "Something went wrong";
+          throw 'Something went wrong';
         }
       })
       .then(async (rJson) => {
         console.log(rJson);
         try {
-          await AsyncStorage.setItem("whatsthat_user_id", rJson.id);
-          await AsyncStorage.setItem("whatsthat_session_token", rJson.token);
+          await AsyncStorage.setItem('whatsthat_user_id', rJson.id);
+          await AsyncStorage.setItem('whatsthat_session_token', rJson.token);
 
           this.setState({ submitted: false });
 
-          this.props.navigation.navigate("Main");
+          this.props.navigation.navigate('Main');
         } catch {
-          throw "Something went wrong";
+          throw 'Something went wrong';
         }
       });
   }
@@ -144,7 +150,7 @@ class Login extends Component {
             )}
           </>
           <View style={styles.dontHaveAccountContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+            <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
               <Text style={styles.dontHaveAccountButton}>
                 Don't have an account?
               </Text>
@@ -162,7 +168,7 @@ const styles = StyleSheet.create({
   },
   formLabel: {
     fontSize: 30,
-    color: "black",
+    color: 'black',
   },
   formInput: {
     fontSize: 20,
@@ -170,45 +176,45 @@ const styles = StyleSheet.create({
     height: 50,
     width: 500,
     borderWidth: 1,
-    borderColor: "#777",
+    borderColor: '#777',
     padding: 8,
     marginVertical: 5,
-    width: "100%",
+    width: '100%',
     borderRadius: 5,
   },
   formTouch: {
-    backgroundColor: "#128C7E",
+    backgroundColor: '#128C7E',
     padding: 10,
     borderRadius: 10,
     margin: 10,
-    textAlign: "center",
+    textAlign: 'center',
   },
   formTouchText: {
-    color: "white",
-    fontWeight: "bold",
+    color: 'white',
+    fontWeight: 'bold',
     fontSize: 20,
   },
   error: {
-    color: "red",
+    color: 'red',
     fontSize: 20,
-    textAlign: "center",
+    textAlign: 'center',
   },
   success: {
-    color: "green",
+    color: 'green',
     fontSize: 20,
     marginTop: 5,
     marginBottom: 10,
-    textAlign: "center",
+    textAlign: 'center',
   },
   dontHaveAccountContainer: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 20,
   },
   dontHaveAccountButton: {
-    color: "black",
+    color: 'black',
     fontSize: 25,
-    textDecorationLine: "underline",
+    textDecorationLine: 'underline',
   },
 });
 
