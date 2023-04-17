@@ -5,7 +5,6 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import globalStyles from "../styles/global";
 
 export default class UserInfoView extends Component {
-  //changename as is called myinfo
   constructor(props) {
     super(props);
 
@@ -22,7 +21,6 @@ export default class UserInfoView extends Component {
     const token = await AsyncStorage.getItem("whatsthat_session_token");
     const userId = await AsyncStorage.getItem("whatsthat_user_id");
     this.get_profile_image(token, userId);
-    // this.interval = setInterval(this.get_profile_image, 3000);
   }
 
   get_profile_image(token, userId) {

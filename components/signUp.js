@@ -99,7 +99,6 @@ class SignUp extends Component {
       <View style={globalStyles.container}>
         <ScrollView>
           <Text style={globalStyles.title}>Create An Account</Text>
-
           <View style={styles.formItem}>
             <Text style={styles.formLabel}>First Name:</Text>
             <TextInput

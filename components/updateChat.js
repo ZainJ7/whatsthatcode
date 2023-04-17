@@ -79,37 +79,6 @@ export default function UpdateChat({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    padding: 20,
-  },
-  label: {
-    fontSize: 30,
-    color: "black",
-  },
-  input: {
-    fontSize: 20,
-    borderRadius: 5,
-    height: 50,
-    width: 500,
-    borderWidth: 1,
-    borderColor: "#777",
-    padding: 8,
-    marginVertical: 5,
-    width: "100%",
-    borderRadius: 5,
-  },
-  submitButton: {
-    backgroundColor: "#128C7E",
-    padding: 10,
-    borderRadius: 10,
-    margin: 10,
-    textAlign: "center",
-  },
-  submitButtonText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 20,
-  },
   formItem: {
     padding: 20,
   },

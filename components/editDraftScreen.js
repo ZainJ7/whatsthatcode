@@ -37,15 +37,15 @@ export default class EditDraftScreen extends Component {
 
   render() {
     return (
-        <View style={globalStyles.container}>
+      <View style={globalStyles.container}>
         <Text style={globalStyles.title}> Edit Draft</Text>
         <View style={styles.formItem}>
-        <TextInput
-          style={styles.formInput}
-          placeholder="Enter your draft"
-          value={this.state.draftText}
-          onChangeText={this.handleDraftTextChange}
-        />
+          <TextInput
+            style={styles.formInput}
+            placeholder="Enter your draft"
+            value={this.state.draftText}
+            onChangeText={this.handleDraftTextChange}
+          />
         </View>
         <TouchableOpacity
           style={styles.formTouch}

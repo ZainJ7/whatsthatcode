@@ -61,27 +61,6 @@ export default function UpdateMessage({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  input: {
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    fontSize: 18,
-    color: "black",
-    marginBottom: 10,
-  },
-  button: {
-    backgroundColor: "lightgreen",
-    borderRadius: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
   error: {
     color: "red",
     marginBottom: 10,
