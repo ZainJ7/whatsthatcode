@@ -10,8 +10,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import globalStyles from '../styles/global';
 
 export default function UpdateMessage({ route, navigation }) {
-  const { chat_id, message_id } = route.params;
-  const [message, setMessage] = useState('');
+  const { chat_id, message_id, messageText } = route.params;
+  const [message, setMessage] = useState(messageText);
   const [error, setError] = useState('');
 
   const handleSubmit = async () => {

@@ -139,8 +139,9 @@ export default class ViewSingleChat extends Component {
               this.props.navigation.navigate('UpdateMessage', {
                 chat_id: this.props.route.params.chat_id,
                 message_id: item.message_id,
+                messageText: item.message,
               })
-            }
+            }            
           >
             <Text style={styles.sendButtonText}>Update</Text>
           </TouchableOpacity>

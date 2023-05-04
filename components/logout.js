@@ -54,8 +54,10 @@ class LogOut extends Component {
           <View style={styles.formItem}>
             <TouchableOpacity
               style={styles.formTouch}
-              onPress={() => this.logout()}
-              onPress={() => navigation.navigate('Login')}
+              onPress={() => {
+                this.logout();
+                navigation.navigate('Login');
+              }}
             >
               <Text style={styles.formTouchText}>Press To Log Out</Text>
             </TouchableOpacity>
