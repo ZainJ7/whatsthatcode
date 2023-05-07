@@ -48,7 +48,7 @@ class SignUp extends Component {
     );
     if (!PASSWORD_REGEX.test(this.state.password)) {
       this.setState({
-        error: "Password isn't strong enough",
+        error: 'Password isnt strong enough',
       });
       return;
     }
@@ -63,34 +63,34 @@ class SignUp extends Component {
     return fetch('http://localhost:3333/api/1.0.0/user', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        first_name: this.state.first_name,
-        last_name: this.state.last_name,
-        email: this.state.email,
-        password: this.state.password,
-      }),
+        'first_name': this.state.first_name,
+        'last_name': this.state.last_name,
+        'email': this.state.email,
+        'password': this.state.password
+      })
     })
       .then((response) => {
-        if (response.status === 201) {
-          return response.json();
-        } else if (response.status === 400) {
+        if(response.status === 201){
+          return response.json()
+        }else if(response.status === 400){
           throw 'Failed validation';
-        } else {
+        }else{
           throw 'Something went wrong';
         }
       })
-      .then((rJson) => {
-        console.log(rJson);
-        this.setState({ error: 'User added successfully' });
-        this.setState({ submitted: false });
-        this.props.navigation.navigate('Login');
-      })
-      .catch((error) => {
-        this.setState({ error: error });
-        this.setState({ submitted: false });
-      });
+        .then((rJson) => {
+          console.log(rJson)
+          this.setState({'error': 'User added successfully'})
+          this.setState({'submitted': false});
+          this.props.navigation.navigate('Login')
+        })
+        .catch((error) => {
+          this.setState({'error': error})
+          this.setState({'submitted': false});
+        })
   }
 
   render() {
@@ -99,10 +99,11 @@ class SignUp extends Component {
       <View style={globalStyles.container}>
         <ScrollView>
           <Text style={globalStyles.title}>Create An Account</Text>
+
           <View style={styles.formItem}>
             <Text style={styles.formLabel}>First Name:</Text>
             <TextInput
-              placeholder=" Enter first name..."
+              placeholder=' Enter first name...'
               style={styles.formInput}
               onChangeText={(first_name) => this.setState({ first_name })}
               value={this.state.first_name}
@@ -112,7 +113,7 @@ class SignUp extends Component {
           <View style={styles.formItem}>
             <Text style={styles.formLabel}>Last Name:</Text>
             <TextInput
-              placeholder=" Enter last name..."
+              placeholder=' Enter last name...'
               style={styles.formInput}
               onChangeText={(last_name) => this.setState({ last_name })}
               value={this.state.last_name}
@@ -122,7 +123,7 @@ class SignUp extends Component {
           <View style={styles.formItem}>
             <Text style={styles.formLabel}>Email:</Text>
             <TextInput
-              placeholder=" Enter email..."
+              placeholder=' Enter email...'
               style={styles.formInput}
               onChangeText={(email) => this.setState({ email })}
               value={this.state.email}
@@ -137,7 +138,7 @@ class SignUp extends Component {
           <View style={styles.formItem}>
             <Text style={styles.formLabel}>Password:</Text>
             <TextInput
-              placeholder=" Enter password..."
+              placeholder=' Enter password...'
               style={styles.formInput}
               secureTextEntry
               onChangeText={(password) => this.setState({ password })}
@@ -153,7 +154,7 @@ class SignUp extends Component {
           <View style={styles.formItem}>
             <Text style={styles.formLabel}>Confirm Password:</Text>
             <TextInput
-              placeholder=" Enter password..."
+              placeholder=' Enter password...'
               style={styles.formInput}
               secureTextEntry
               onChangeText={(confirmPass) => this.setState({ confirmPass })}
@@ -179,12 +180,10 @@ class SignUp extends Component {
             )}
           </>
           <View style={styles.haveAccountContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-              <Text style={styles.haveAccountButton}>
-                Already have an account?
-              </Text>
-            </TouchableOpacity>
-          </View>
+       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.haveAccountButton}>Already have an account?</Text>
+        </TouchableOpacity>
+        </View>
         </ScrollView>
       </View>
     );
