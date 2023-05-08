@@ -29,8 +29,8 @@ const ContactStack = createStackNavigator();
 const ContactStackNavigator = () => {
   return (
     <ContactStack.Navigator>
-      <ContactStack.Screen name="ContactList" component={ContactList} />
-      <ContactStack.Screen name="BlockedContact" component={BlockedContact} />
+      <ContactStack.Screen name='ContactList' component={ContactList} />
+      <ContactStack.Screen name='BlockedContact' component={BlockedContact} />
     </ContactStack.Navigator>
   );
 };
@@ -40,9 +40,9 @@ const UserInfoStack = createStackNavigator();
 const UserInfoStackNavigator = () => {
   return (
     <UserInfoStack.Navigator>
-      <UserInfoStack.Screen name="UserInfoView" component={UserInfoView} />
-      <UserInfoStack.Screen name="EditInfo" component={EditInfo} />
-      <UserInfoStack.Screen name="UploadPhoto" component={UploadPhoto} />
+      <UserInfoStack.Screen name='UserInfoView' component={UserInfoView} />
+      <UserInfoStack.Screen name='EditInfo' component={EditInfo} />
+      <UserInfoStack.Screen name='UploadPhoto' component={UploadPhoto} />
     </UserInfoStack.Navigator>
   );
 };
@@ -52,13 +52,13 @@ const ChatStack = createStackNavigator();
 const ChatStackNavigator = () => {
   return (
     <ChatStack.Navigator>
-      <ChatStack.Screen name="ViewChat" component={ViewChat} />
-      <ChatStack.Screen name="ViewSingleChat" component={ViewSingleChat} />
-      <ChatStack.Screen name="UpdateChat" component={UpdateChat} />
-      <ChatStack.Screen name="AddOrDeleteUser" component={AddOrDeleteUser} />
-      <ChatStack.Screen name="UpdateMessage" component={UpdateMessage} />
-      <ChatStack.Screen name="Drafts" component={Drafts} />
-      <ChatStack.Screen name="EditDraftScreen" component={EditDraftScreen} />
+      <ChatStack.Screen name='ViewChat' component={ViewChat} />
+      <ChatStack.Screen name='ViewSingleChat' component={ViewSingleChat} />
+      <ChatStack.Screen name='UpdateChat' component={UpdateChat} />
+      <ChatStack.Screen name='AddOrDeleteUser' component={AddOrDeleteUser} />
+      <ChatStack.Screen name='UpdateMessage' component={UpdateMessage} />
+      <ChatStack.Screen name='Drafts' component={Drafts} />
+      <ChatStack.Screen name='EditDraftScreen' component={EditDraftScreen} />
     </ChatStack.Navigator>
   );
 };
@@ -70,7 +70,7 @@ const MainTabNavigator = () => {
       options={{ headerShown: false }}
     >
       <Tab.Screen
-        name="Contacts"
+        name='Contacts'
         component={ContactStackNavigator}
         options={{
           tabBarIcon: ({ focused, size }) => (
@@ -83,7 +83,7 @@ const MainTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Chat"
+        name='Chat'
         component={ChatStackNavigator}
         options={{
           tabBarIcon: ({ focused, size }) => (
@@ -96,7 +96,7 @@ const MainTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Info"
+        name='Info'
         component={UserInfoStackNavigator}
         options={{
           tabBarIcon: ({ focused, size }) => (
@@ -109,7 +109,7 @@ const MainTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Search"
+        name='Search'
         component={Search}
         options={{
           tabBarIcon: ({ focused, size }) => (
@@ -122,7 +122,7 @@ const MainTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Log Out"
+        name='Log Out'
         component={LogOut}
         options={{
           tabBarIcon: ({ focused, size }) => (
@@ -142,10 +142,10 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name='Login' component={Login} />
+        <Stack.Screen name='SignUp' component={SignUp} />
         <Stack.Screen
-          name="Main"
+          name='Main'
           component={MainTabNavigator}
           options={{ headerShown: false }}
         />
