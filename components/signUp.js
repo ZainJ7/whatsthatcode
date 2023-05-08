@@ -34,18 +34,18 @@ class SignUp extends Component {
     this.setState({ success: false });
 
     if (!(this.state.email && this.state.password)) {
-      this.setState({ error: 'Must enter email and password' }, () => {
+      this.setState({ message: 'Must enter email and password' }, () => {
         setTimeout(() => {
-          this.setState({ error: '' });
+          this.setState({ message: '' });
         }, 2000);
       });
       return;
     }
 
     if (!EmailValidator.validate(this.state.email)) {
-      this.setState({ error: 'Must enter valid email' }, () => {
+      this.setState({ message: 'Must enter valid email' }, () => {
         setTimeout(() => {
-          this.setState({ error: '' });
+          this.setState({ message: '' });
         }, 2000);
       });
       return;
@@ -56,9 +56,9 @@ class SignUp extends Component {
       '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
     );
     if (!PASSWORD_REGEX.test(this.state.password)) {
-      this.setState({ error: 'Password isn\'t strong enough' }, () => {
+      this.setState({ message: 'Password isn\'t strong enough' }, () => {
         setTimeout(() => {
-          this.setState({ error: '' });
+          this.setState({ message: '' });
         }, 2000);
       });
       return;
@@ -66,9 +66,9 @@ class SignUp extends Component {
     
 
     if (this.state.password !== this.state.confirmPass) {
-  this.setState({ error: 'Passwords do not match' }, () => {
+  this.setState({ message: 'Passwords do not match' }, () => {
     setTimeout(() => {
-      this.setState({ error: '' });
+      this.setState({ message: '' });
     }, 2000);
   });
   return;
