@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, FlatList, Button } from 'react-native';
+import { View, Text, Image, StyleSheet, FlatList,} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import globalStyles from '../styles/global';

@@ -1,28 +1,28 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, TextInput, TouchableOpacity,StyleSheet, } from 'react-native';
+import {
+  View, ScrollView, Text, TextInput, TouchableOpacity, StyleSheet,
+} from 'react-native';
 import * as EmailValidator from 'email-validator';
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import globalStyles from '../styles/global';
 
 class Login extends Component {
-
-  componentDidMount(){
+  componentDidMount() {
     this.unsubscribe = this.props.navigation.addListener('focus', () => {
       this.checkLoggedIn();
     });
   }
 
   componentWillUnmount() {
-      this.unsubscribe();
+    this.unsubscribe();
   }
 
   checkLoggedIn = async () => {
     const value = await AsyncStorage.getItem('whatsthat_session_token');
     if (value == null) {
       this.props.navigation.navigate('Login');
-    };
-  }
-
+    }
+  };
 
   constructor(props) {
     super(props);
@@ -55,55 +55,53 @@ class Login extends Component {
 
     this.setState({ success: true });
 
-
     return fetch('http://localhost:3333/api/1.0.0/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        'email': this.state.email,
-        'password': this.state.password
-      })
+        email: this.state.email,
+        password: this.state.password,
+      }),
     })
       .then((response) => {
-        if(response.status === 200){
+        if (response.status === 200) {
           this.setState({ message: 'Success your logged in!' }, () => {
             setTimeout(() => {
               this.setState({ message: '' });
             }, 3000);
           });
-          return response.json()
-        }else if(response.status === 400){
+          return response.json();
+        } if (response.status === 400) {
           this.setState({ message: 'Wrong email or password' }, () => {
             setTimeout(() => {
               this.setState({ message: '' });
             }, 3000);
           });
           throw 'Failed validation';
-        }else{
+        } else {
           this.setState({ message: 'Sorry something went wrong on our end, try again!' }, () => {
             setTimeout(() => {
               this.setState({ message: '' });
             }, 3000);
           });
           throw 'Something went wrong';
-          
         }
       })
-     .then(async (rJson) => {
-       console.log(rJson)
-       try{
-         await AsyncStorage.setItem('whatsthat_user_id', rJson.id)
-         await AsyncStorage.setItem('whatsthat_session_token', rJson.token)
+      .then(async (rJson) => {
+        console.log(rJson);
+        try {
+          await AsyncStorage.setItem('whatsthat_user_id', rJson.id);
+          await AsyncStorage.setItem('whatsthat_session_token', rJson.token);
 
-         this.setState({'submitted': false});
+          this.setState({ submitted: false });
 
-         this.props.navigation.navigate('Main')
-       }catch{
-         throw 'Something went wrong'
-       }
-     })
+          this.props.navigation.navigate('Main');
+        } catch {
+          throw 'Something went wrong';
+        }
+      });
   }
 
   render() {
@@ -116,7 +114,7 @@ class Login extends Component {
           <View style={styles.formItem}>
             <Text style={styles.formLabel}>Email:</Text>
             <TextInput
-              placeholder=' Enter email...'
+              placeholder=" Enter email..."
               style={styles.formInput}
               onChangeText={(email) => this.setState({ email })}
               value={this.state.email}
@@ -131,7 +129,7 @@ class Login extends Component {
           <View style={styles.formItem}>
             <Text style={styles.formLabel}>Password:</Text>
             <TextInput
-              placeholder=' Enter password...'
+              placeholder=" Enter password..."
               style={styles.formInput}
               secureTextEntry
               onChangeText={(password) => this.setState({ password })}
@@ -154,10 +152,10 @@ class Login extends Component {
           </View>
           <Text style={styles.message}>{this.state.message}</Text>
           <View style={styles.dontHaveAccountContainer}>
-       <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-          <Text style={styles.dontHaveAccountButton}>Don't have an account?</Text>
-        </TouchableOpacity>
-        </View>
+            <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+              <Text style={styles.dontHaveAccountButton}>Don't have an account?</Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </View>
     );
@@ -224,6 +222,5 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
 });
-
 
 export default Login;
