@@ -68,11 +68,27 @@ class Login extends Component {
     })
       .then((response) => {
         if(response.status === 200){
+          this.setState({ message: 'Success your logged in!' }, () => {
+            setTimeout(() => {
+              this.setState({ message: '' });
+            }, 3000);
+          });
           return response.json()
         }else if(response.status === 400){
+          this.setState({ message: 'Wrong email or password' }, () => {
+            setTimeout(() => {
+              this.setState({ message: '' });
+            }, 3000);
+          });
           throw 'Failed validation';
         }else{
+          this.setState({ message: 'Sorry something went wrong on our end, try again!' }, () => {
+            setTimeout(() => {
+              this.setState({ message: '' });
+            }, 3000);
+          });
           throw 'Something went wrong';
+          
         }
       })
      .then(async (rJson) => {
@@ -136,15 +152,7 @@ class Login extends Component {
               <Text style={styles.formTouchText}>Login</Text>
             </TouchableOpacity>
           </View>
-
-          {this.state.submitted && !this.state.error && (
-            <Text style={styles.success}>Success! Your Logged In</Text>
-          )}
-          <>
-            {this.state.error && (
-              <Text style={styles.error}>{this.state.error}</Text>
-            )}
-          </>
+          <Text style={styles.message}>{this.state.message}</Text>
           <View style={styles.dontHaveAccountContainer}>
        <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
           <Text style={styles.dontHaveAccountButton}>Don't have an account?</Text>
@@ -157,6 +165,12 @@ class Login extends Component {
 }
 
 const styles = StyleSheet.create({
+  message: {
+    fontSize: 20,
+    alignSelf: 'stretch',
+    textAlign: 'center',
+    color: 'red'
+  },
   formItem: {
     padding: 20,
   },

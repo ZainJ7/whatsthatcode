@@ -34,29 +34,46 @@ class SignUp extends Component {
     this.setState({ success: false });
 
     if (!(this.state.email && this.state.password)) {
-      this.setState({ error: 'Must enter email and password' });
+      this.setState({ error: 'Must enter email and password' }, () => {
+        setTimeout(() => {
+          this.setState({ error: '' });
+        }, 2000);
+      });
       return;
     }
 
     if (!EmailValidator.validate(this.state.email)) {
-      this.setState({ error: 'Must enter valid email' });
+      this.setState({ error: 'Must enter valid email' }, () => {
+        setTimeout(() => {
+          this.setState({ error: '' });
+        }, 2000);
+      });
       return;
     }
+    
 
     const PASSWORD_REGEX = new RegExp(
       '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
     );
     if (!PASSWORD_REGEX.test(this.state.password)) {
-      this.setState({
-        error: 'Password isnt strong enough',
+      this.setState({ error: 'Password isn\'t strong enough' }, () => {
+        setTimeout(() => {
+          this.setState({ error: '' });
+        }, 2000);
       });
       return;
     }
+    
 
     if (this.state.password !== this.state.confirmPass) {
-      this.setState({ error: 'Passwords do not match' });
-      return;
-    }
+  this.setState({ error: 'Passwords do not match' }, () => {
+    setTimeout(() => {
+      this.setState({ error: '' });
+    }, 2000);
+  });
+  return;
+}
+
 
     this.setState({ success: true });
 
@@ -74,10 +91,25 @@ class SignUp extends Component {
     })
       .then((response) => {
         if(response.status === 201){
+          this.setState({ message: 'Success user created' }, () => {
+            setTimeout(() => {
+              this.setState({ message: '' });
+            }, 3000);
+          });
           return response.json()
         }else if(response.status === 400){
+          this.setState({ message: 'Email already in use' }, () => {
+            setTimeout(() => {
+              this.setState({ message: '' });
+            }, 3000);
+          });
           throw 'Failed validation';
         }else{
+          this.setState({ message: 'Sorry something went wrong on our end, please try again' }, () => {
+            setTimeout(() => {
+              this.setState({ message: '' });
+            }, 3000);
+          });
           throw 'Something went wrong';
         }
       })
@@ -170,15 +202,7 @@ class SignUp extends Component {
               <Text style={styles.formTouchText}>Sign Up</Text>
             </TouchableOpacity>
           </View>
-
-          {this.state.submitted && !this.state.error && (
-            <Text style={styles.success}>Success! Account Created</Text>
-          )}
-          <>
-            {this.state.error && (
-              <Text style={styles.error}>{this.state.error}</Text>
-            )}
-          </>
+          <Text style={styles.message}>{this.state.message}</Text>
           <View style={styles.haveAccountContainer}>
        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
           <Text style={styles.haveAccountButton}>Already have an account?</Text>
@@ -191,6 +215,12 @@ class SignUp extends Component {
 }
 
 const styles = StyleSheet.create({
+  message: {
+    fontSize: 20,
+    alignSelf: 'stretch',
+    textAlign: 'center',
+    color: 'red'
+  },
   formItem: {
     padding: 10,
   },
