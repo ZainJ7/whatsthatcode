@@ -21,11 +21,10 @@ export default class ViewChat extends Component {
 
   componentDidMount() {
     this.fetchChats();
-    this.interval = setInterval(this.fetchChats, 3000); //refresh messages every 3 seconds
+    this.interval = setInterval(this.fetchChats, 3000); 
   }
 
   componentWillUnmount() {
-    // Clear the interval when the component unmounts
     clearInterval(this.interval);
   }
 

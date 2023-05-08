@@ -25,11 +25,10 @@ export default class ViewSingleChat extends Component {
     this.state.userLoggedInId = await AsyncStorage.getItem('whatsthat_user_id');
     const { chat_id } = this.props.route.params;
     this.fetchMessages(chat_id);
-    this.interval = setInterval(this.fetchMessages, 3000); //refresh messages every 3 seconds
+    this.interval = setInterval(this.fetchMessages, 3000); 
   }
 
   fetchMessages = async () => {
-    //set interval 3 sec
     try {
       const { chat_id } = this.props.route.params;
       const token = await AsyncStorage.getItem('whatsthat_session_token');
@@ -87,7 +86,7 @@ export default class ViewSingleChat extends Component {
     } catch (error) {
       this.fetchMessages(chat_id);
     }
-    this.setState({ newMessage: '' }); // Clear the user input after message is sen
+    this.setState({ newMessage: '' }); 
   };
 
   handleDeleteMessage = async (message_id) => {

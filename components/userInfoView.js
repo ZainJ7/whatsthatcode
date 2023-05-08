@@ -17,7 +17,7 @@ export default class UserInfoView extends Component {
 
   async componentDidMount() {
     this.fetchUserInfo();
-    this.interval = setInterval(this.fetchUserInfo, 3000); //refresh messages every 3 seconds
+    this.interval = setInterval(this.fetchUserInfo, 3000); 
     const token = await AsyncStorage.getItem('whatsthat_session_token');
     const userId = await AsyncStorage.getItem('whatsthat_user_id');
     this.get_profile_image(token, userId);

@@ -1,8 +1,6 @@
 import {
   Camera,
   CameraType,
-  onCameraReady,
-  CameraPictureOptions,
 } from 'expo-camera';
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
