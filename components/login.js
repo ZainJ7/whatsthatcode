@@ -169,7 +169,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     alignSelf: 'stretch',
     textAlign: 'center',
-    color: 'red'
   },
   formItem: {
     padding: 20,

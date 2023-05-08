@@ -79,10 +79,11 @@ export default class ViewChat extends Component {
       }
     >
       <View style={styles.nameContainer}>
-        <Text style={styles.name}>
+      <Text style={styles.name}>{item.name}</Text>
+        <Text style={styles.chatName}>
           {item.creator.first_name} {item.creator.last_name}
         </Text>
-        <Text style={styles.chatName}>{item.name}</Text>
+        
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.updateButton}
